@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Auth;
   
 use App\Http\Controllers\Controller;
+use App\Models\Project;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Session;
@@ -39,11 +40,12 @@ class AuthController extends Controller
     public function postLogin(Request $request)
     {
         $request->validate([
-            'email' => 'required',
+            'VIPUserName' => 'required',
             'password' => 'required',
         ]);
    
-        $credentials = $request->only('email', 'password');
+        $credentials = $request->only('VIPUserName', 'password'); 
+
         if (Auth::attempt($credentials)) {
             return redirect()->intended('dashboard')
                         ->withSuccess('You have Successfully loggedin');
@@ -78,8 +80,16 @@ class AuthController extends Controller
      */
     public function dashboard()
     {
+        $allEmployees = count(User::all());
+
+        $allProjects = count(Project::all());
+
+        $projects = Project::all();
+
+        $employees = User::all()->take(5);
+
         if(Auth::check()){
-            return view('dashboard');
+            return view('auth.dashboard', compact('allEmployees', 'allProjects', 'projects', 'employees'));
         }
   
         return redirect("login")->withSuccess('Opps! You do not have access');
