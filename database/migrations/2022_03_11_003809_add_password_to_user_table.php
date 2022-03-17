@@ -15,13 +15,13 @@ class AddPasswordToUserTable extends Migration
      */
     public function up()
     {
-        Schema::table("Security.VIPUser", function (Blueprint $table) {
-            $table->string('email')->unique()->nullable();
-            $table->timestamp('email_verified_at')->nullable();
-            $table->string('password')->nullable();
-            $table->rememberToken();
-            $table->timestamps();
-        });
+        // Schema::table("Security.VIPUser", function (Blueprint $table) {
+        //     $table->string('email')->unique()->nullable();
+        //     $table->timestamp('email_verified_at')->nullable();
+        //     $table->string('password')->nullable();
+        //     $table->rememberToken();
+        //     $table->timestamps();
+        // });
     }
 
     /**
@@ -31,9 +31,9 @@ class AddPasswordToUserTable extends Migration
      */
     public function down()
     {
-        Schema::table('Security.VIPUser', function (Blueprint $table) {
-            $table->dropColumn('email');
-            $table->dropColumn('password');
-        });
+        // Schema::table('Security.VIPUser', function (Blueprint $table) {
+        //     $table->dropColumn('email');
+        //     $table->dropColumn('password');
+        // });
     }
 }
