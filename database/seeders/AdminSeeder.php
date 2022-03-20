@@ -43,6 +43,30 @@ class AdminSeeder extends Seeder
                     'role_id' => 2,
                     'created_at' => new DateTime,
                     'updated_at' => new DateTime,
+                ],               
+                [
+                    'GenEntityID' => 10,
+                    'role_id' => 3,
+                    'created_at' => new DateTime,
+                    'updated_at' => new DateTime,
+                ],                
+                [
+                    'GenEntityID' => 11,
+                    'role_id' => 3,
+                    'created_at' => new DateTime,
+                    'updated_at' => new DateTime,
+                ],                
+                [
+                    'GenEntityID' => 12,
+                    'role_id' => 3,
+                    'created_at' => new DateTime,
+                    'updated_at' => new DateTime,
+                ],
+                [
+                    'GenEntityID' => 14,
+                    'role_id' => 3,
+                    'created_at' => new DateTime,
+                    'updated_at' => new DateTime,
                 ],
             ];
 

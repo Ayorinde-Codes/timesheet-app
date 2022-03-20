@@ -168,7 +168,8 @@
                                   <tbody>
                                     <tr>
                                       <td style="width:150px;">
-                                        <img alt="Logo" height="auto" src="{{ asset('images/HandiworkLogo2.png') }}" style="border:0;display:block;outline:none;text-decoration:none;height:auto;width:100%;font-size:14px;" width="150" />
+                                        {{-- <img alt="Logo" height="auto" src="{{ asset('images/HandiworkLogo2.png') }}" style="border:0;display:block;outline:none;text-decoration:none;height:auto;width:100%;font-size:14px;" width="150" /> --}}
+                                        LOGO
                                       </td>
                                     </tr>
                                   </tbody>
@@ -273,7 +274,7 @@
                             </tr>
                             <tr>
                               <td align="left" style="font-size:0px;padding:10px 25px;word-break:break-word;">
-                                <div style="font-family:Quattrocento;font-size:18px;font-weight:400;line-height:24px;text-align:left;color:#000000;">click on the button below to view </div>
+                                <div style="font-family:Quattrocento;font-size:18px;font-weight:400;line-height:24px;text-align:left;color:#000000;">click on the button below to approve  </div>
                               </td>
                             </tr>
                             <tr>
