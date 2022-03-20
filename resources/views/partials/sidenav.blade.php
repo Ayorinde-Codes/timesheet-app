@@ -25,11 +25,11 @@
                     <a href="{{ URL('timesheet') }}"><i class="la la-calendar"></i> <span>Timesheet</span></a>
                 </li>   
                 <li> 
-                    <a href="{{ URL('absence') }}"><i class="la la-user-times"></i> <span>Absence</span></a>
+                    <a href="{{ URL('absence') }}"><i class="la la-user-times"></i> <span>Absence (Leave)</span></a>
                 </li>               
                 <li> 
                     <a href="{{ URL('profile') }}"><i class="la la-user-times"></i> <span>Profile</span></a>
-                </li>   
+                </li>
             </ul>
         </div>
     </div>

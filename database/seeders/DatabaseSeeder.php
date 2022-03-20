@@ -19,6 +19,7 @@ class DatabaseSeeder extends Seeder
             RoleSeeder::class,
             ProjectSeeder::class,
             AbsenceSeeder::class,
+            UserSupervisorSeeder::class
           ]);
     }
 }

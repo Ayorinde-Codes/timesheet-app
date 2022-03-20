@@ -15,6 +15,7 @@ class CreateUserSupervisorsTable extends Migration
     {
         Schema::create('user_supervisors', function (Blueprint $table) {
             $table->increments('id');
+            $table->unsignedInteger('GenEntityID')->nullable();
             $table->unsignedInteger('primary_supervisor')->nullable();
             $table->unsignedInteger('secondary_supervisor')->nullable();
             $table->timestamp('start_date')->nullable();  
@@ -22,7 +23,7 @@ class CreateUserSupervisorsTable extends Migration
             $table->timestamps();
         });
     }
-
+    
     /**
      * Reverse the migrations.
      *
