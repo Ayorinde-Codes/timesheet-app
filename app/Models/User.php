@@ -17,6 +17,10 @@ class User extends Authenticatable
 
     // protected $guarded = [];
    
+    // protected $primaryKey = 'VIPUserID';
+
+
+
 
 
     /**

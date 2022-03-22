@@ -17,11 +17,12 @@ class CreateProjectsTable extends Migration
             $table->increments('id');
             $table->string('name');
             $table->boolean('status')->default(1);
+            $table->string('project_code')->nullable();
             $table->timestamps();
         });
     }
 
-    /**
+    /** 
      * Reverse the migrations.
      *
      * @return void

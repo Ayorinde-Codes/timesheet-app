@@ -25,16 +25,7 @@
                 </div>
             </div>
             <!-- /Page Header -->
- {{-- $table->increments('id');
-            $table->string('name');
-            $table->unsignedInteger('project_id');
-            $table->unsignedInteger('GenEntityID');
-            $table->enum('level', [1, 2, 3]);
-            $table->enum('status', ['processing', 'successful']);
-            $table->timestamp('time_worked')->nullable();
-            $table->timestamp('standard_time')->nullable();
-            $table->timestamp('over_time')->nullable();
-            $table->timestamps(); --}}
+
             <div class="row">
                 <div class="col-md-12">
                     <div class="table-responsive">

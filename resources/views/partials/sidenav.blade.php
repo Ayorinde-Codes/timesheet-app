@@ -12,7 +12,7 @@
                     <a href={{URL('/dashboard')}}><i class="la la-dashboard"></i> <span> Dashboard</span> </a>
                     {{-- <ul style="display: none;">
                         <li><a href="index.html">Admin Dashboard</a></li>
-                        <li><a href="employee-dashboard.html">Employee Dashboard</a></li>
+                        <li><a href="employee-dashboard.html">Employee Dashboard</a></li> authorize_employee  user/leave
                     </ul> --}}
                 </li>
                 <li> 
@@ -29,6 +29,12 @@
                 </li>               
                 <li> 
                     <a href="{{ URL('profile') }}"><i class="la la-user-times"></i> <span>Profile</span></a>
+                </li>
+                <li> 
+                    <a href="{{ URL('authorize_employee') }}"><i class="la la-user-times"></i> <span> Authorize Employee</span></a>
+                </li>
+                <li> 
+                    <a href="{{ URL('user/leave') }}"><i class="la la-user-times"></i> <span> Employee Leave</span></a>
                 </li>
             </ul>
         </div>

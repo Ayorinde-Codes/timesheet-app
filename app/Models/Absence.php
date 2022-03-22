@@ -8,4 +8,10 @@ use Illuminate\Database\Eloquent\Model;
 class Absence extends Model
 {
     use HasFactory;
+
+    public static function leave($type_id)
+    {
+        return Self::where('id', $type_id)->first();
+    }
+
 }

@@ -10,7 +10,7 @@
         <title>Timesheet - HRMS admin template</title>
 		
 		<!-- Favicon -->
-        <link rel="shortcut icon" type="image/x-icon" href="assets/img/favicon.png">
+        <link rel="shortcut icon" type="image/x-icon" href="{{URL::TO('assets/img/favicon.png')}}">
 		
 		<!-- Bootstrap CSS -->
         <link rel="stylesheet" href="{{URL::TO('assets/css/bootstrap.min.css')}}">
@@ -33,6 +33,7 @@
 		<!-- Main CSS -->
         <link rel="stylesheet" href="{{URL::TO('assets/css/style.css')}}">
 		
+        {{-- <script src = "https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script> --}}
 		<!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
 		<!--[if lt IE 9]>
 			<script src="assets/js/html5shiv.min.js"></script>
@@ -47,5 +48,6 @@
             @yield("content")
         @include('partials.footer')
 
+        @yield('scripts')
 
 

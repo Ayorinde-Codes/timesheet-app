@@ -10,7 +10,7 @@
             <div class="page-header">
                 <div class="row align-items-center">
                     <div class="col">
-                        <h3 class="page-title">Absence</h3>
+                        <h3 class="page-title">Absence (Leave)</h3>
                         <ul class="breadcrumb">
                             <li class="breadcrumb-item"><a href="index.html">Dashboard</a></li>
                             <li class="breadcrumb-item active">Absence</li>
@@ -33,6 +33,7 @@
                                 <tr>
                                     <th>Absence (Leave)</th>
                                     <th>Description</th>
+                                    <th>Time Period (Days)</th>
                                     <th class="text-right">Action</th>
                                 </tr>
                             </thead>
@@ -45,6 +46,9 @@
                                     </td>
                                     <td>
                                         {{$absence->description}}
+                                    </td>
+                                    <td>
+                                        {{$absence->time_period}}
                                     </td>
                                    
                                     <td class="text-right">
