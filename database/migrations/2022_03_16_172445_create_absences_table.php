@@ -17,6 +17,7 @@ class CreateAbsencesTable extends Migration
             $table->increments('id');
             $table->string('name');
             $table->text('description');
+            $table->timestamp('time_period')->nullable();
             $table->timestamps();
         });
     }

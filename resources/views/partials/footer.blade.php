@@ -23,7 +23,7 @@
 <script src="{{URL::TO('assets/js/dataTables.bootstrap4.min.js')}}"></script>
 
 <!-- Custom JS -->
-<script src="{{URL::TO('assets/js/app.js')}}"></script>
+<script src="{{URL::TO('assets/js/app.js')}}" defer></script>
 
 </body>
 </html>

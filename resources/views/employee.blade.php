@@ -72,6 +72,7 @@
                                     <th>Email</th>
                                     <th>Phone</th>
                                     <th>Role</th>
+                                    <th>On Leave</th>
                                     <th class="text-right">Action</th>
                                 </tr>
                             </thead>
@@ -96,7 +97,10 @@
                                             class="{{$userRole->role->name == 'admin' ? 'badge bg-inverse-danger' :  ( $userRole->role->name  == 'employee' ? 'badge bg-inverse-success' : 'badge bg-inverse-info')}}" > {{optional($userRole)->role->name }} </span>
                                         </td>
                                     @endif
-                                     
+                                    {{-- <td> {{$employee->is_on_leave ? <span class='badge bg-inverse-danger'> on leave </span> : ''}}</td> --}}
+                                    @if($employee->is_on_leave) <td> <span class='badge bg-inverse-danger'> on leave* </span> </td> @else <td></td> @endif
+
+
                                     <td class="text-right">
                                         <div class="dropdown dropdown-action">
                                             <a href="#" class="action-icon dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i class="material-icons">more_vert</i></a>
@@ -119,7 +123,9 @@
                                                     </button>
                                                 </div>
                                                 <div class="modal-body">
-                                                    <form>
+                                                    <form action="{{ route('employee.update') }}" method="POST">
+                                                        @csrf
+                                                    {{-- <form employee.update> --}}
                                                         <div class="row">
                                                             <div class="col-sm-6">
                                                                 <div class="form-group">
@@ -154,7 +160,7 @@
                                                             <div class="col-sm-6">
                                                                 <div class="form-group">
                                                                     <label>Role</label>
-                                                                    <select  name="role_id" id="role_id" class="select">
+                                                                    <select  name="role_id" id="role_id" class="select1">
                                                                         <option></option>
                                                                         @foreach($roles as $role)
                                                                             <option value={{ $role->id }}>{{\Str::ucfirst($role->name) }}</option>
@@ -167,7 +173,7 @@
                                                             <div class="col-sm-6">
                                                                 <div class="form-group">
                                                                     <label>Assign Supervisor</label>
-                                                                    <select  name="supervisor_id" id="supervisor_id" class="select">
+                                                                    <select  name="supervisor_id" id="supervisor_id" class="select2">
                                                                         <option></option>
                                                                         @foreach($supervisors as $supervisor)
                                                                             @php
@@ -183,26 +189,41 @@
 
                                                             <div class="col-sm-6">
                                                                 <div class="form-group">
-                                                                    <label>Assign Temporary Supervisor</label>
-                                                                    <select id="parent_id"  name="supervisor_id"  class="select">
-                                                                        <option></option>
-                                                                        @foreach($supervisors as $supervisor)
-                                                                            @php
-                                                                                $getUser = \App\Models\User::entity($supervisor->GenEntityID);
-                                                                            @endphp
+                                                                    <input type="checkbox" name="temp_supervisor" class="temp_supervisor" id= "temp_supervisor" value="1" onchange="valueChanged()" /> Assign Temporary Supervisor  <br>
+                                                                    {{-- <input type="checkbox" name="check1" value="checkbox" id="showme" /> Assign Temporary Supervisor  --}}
+                                                                <br>
+                                                                
+                                                                <div class="show_supervisor"  style="display:none;">
+                                                                    <div class="row">
+                                                                        <div class="col-sm-12">
+                                                                            <label>Supervisors</label>
+                                                                            <select id="secondary_supervisor_id"  name="secondary_supervisor_id"  class="select">
+                                                                                <option></option>
+                                                                                @foreach($supervisors as $supervisor)
+                                                                                    @php
+                                                                                        $getUser = \App\Models\User::entity($supervisor->GenEntityID);
+                                                                                    @endphp
 
-                                                                            <option value={{ $supervisor->GenEntityID }}>{{optional($getUser)->DisplayName }}</option>
-                                                                        @endforeach
-                                                                    </select> 
-                                                                    
-                                                                </div>
-
-                                                                {{-- <div class="some"  id="some_{{ $row->id }}"  style="display:none;">
-                                                                    {{ $row->details }}
-                                                                   </div> --}}
-                                                                <div class="form-group">
-                                                                    <label>Phone </label>
-                                                                    <input class="form-control some" id="some_{{ $supervisor->GenEntityID }}"  type="text" style="display:none;">
+                                                                                    <option value={{ $supervisor->GenEntityID }}>
+                                                                                        {{optional($getUser)->DisplayName }}
+                                                                                    </option>
+                                                                                @endforeach
+                                                                            </select> 
+                                                                        </div>
+                                                                        <div class="form-group col-sm-6">
+                                                                            <label>From <span class="text-danger">*</span></label>
+                                                                            <div class="cal-icon">
+                                                                                <input class="form-control datetimepicker" name="date_from" type="text">
+                                                                            </div>
+                                                                        </div>
+                                                                        <div class="form-group col-sm-6">
+                                                                            <label>To <span class="text-danger">*</span></label>
+                                                                            <div class="cal-icon">
+                                                                                <input class="form-control datetimepicker" name="date_to" type="text">
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                    </div>
                                                                 </div>
                                                             </div>
                                                             
@@ -226,7 +247,7 @@
         <!-- /Page Content -->
         
         <!-- Add User Modal -->
-        <div id="add_user" class="modal custom-modal fade" role="dialog">
+        {{-- <div id="add_user" class="modal custom-modal fade" role="dialog">
             <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
@@ -406,7 +427,7 @@
                                         </tr>
                                     </tbody>
                                 </table>
-                            </div> --}}
+                            </div> 
                             <div class="submit-section">
                                 <button class="btn btn-primary submit-btn">Submit</button>
                             </div>
@@ -414,7 +435,7 @@
                     </div>
                 </div>
             </div>
-        </div>
+        </div> --}}
         <!-- /Add User Modal -->
         
         <!-- Edit User Modal -->
@@ -512,11 +533,14 @@
         
     </div>
     @endsection  
-    @section('script')
+    @section('scripts')
         <script type="text/javascript">
-            $('#parent_id').on('change',function(){
-            $(".some").hide();
-            var some = $(this).find('option:selected').val();
-            $("#some_" + some).show();}); 
+            function valueChanged()
+            {
+                if($('.temp_supervisor').is(":checked"))   
+                    $(".show_supervisor").show();
+                else
+                    $(".show_supervisor").hide();
+            }
         </script>
     @endsection

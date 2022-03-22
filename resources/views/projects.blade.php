@@ -33,6 +33,7 @@
                                 <tr>
                                     <th>Project</th>
                                     <th>Status</th>
+                                    <th>Project Code</th>
                                     <th class="text-right">Action</th>
                                 </tr>
                             </thead>
@@ -46,6 +47,9 @@
                                     <td>
                                         <i class="{{$project->status ? 'fa fa-dot-circle-o text-success' : 'fa fa-dot-circle-o text-danger'}} "></i> {{$project->status ? 'Active' : 'Inactive'}} 
                                    </td>
+                                   <td>
+                                        {{$project->project_code}}
+                                    </td>
                                     <td class="text-right">
                                         <div class="dropdown dropdown-action">
                                             <a href="#" class="action-icon dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i class="material-icons">more_vert</i></a>
