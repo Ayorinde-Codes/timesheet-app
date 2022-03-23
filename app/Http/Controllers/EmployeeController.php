@@ -6,6 +6,7 @@ use App\Models\Entity;
 use App\Models\Role;
 use App\Models\User;
 use App\Models\UserRole;
+use App\Models\UserSupervisor;
 use Illuminate\Http\Request;
 use Carbon\Carbon;
 class EmployeeController extends Controller
@@ -33,49 +34,118 @@ class EmployeeController extends Controller
 
     public function editEmployee(Request $request)
     {
-        $date_from = $request->input('date_from') ?? null;
-        $date_to = $request->input('date_to') ?? null;
+        $start_date = $request->input('date_from') ? Carbon::createFromFormat('d/m/Y', $request->date_from)->format('Y-m-d H:i:s') : null;
+        $end_date = $request->input('date_to') ? Carbon::createFromFormat('d/m/Y', $request->date_to)->format('Y-m-d H:i:s') : null;
 
-        // if($request->filled('date_from')){
-        //     $date_from = Carbon::createFromFormat('d/m/Y', $request->date_from)->format('Y-m-d H:i:s');
+        $genEntityID = $request->input('GenEntityID');
 
-        // }
+        $secondary_supervisor_id = $request->input('secondary_supervisor_id') ?? null;
 
-        // if($request->filled('date_to')){
-        //     $date_to = Carbon::createFromFormat('d/m/Y', $request->date_to)->format('Y-m-d H:i:s');
-        // }
+        $userSupervisor = UserSupervisor::where('GenEntityID', $genEntityID)->first();
 
+        $userEntity = array_filter([
+            'LastName' => $request->FirstName,
+            'LastName' => $request->LastName,
+            'EmailAddress' => $request->Email,
+            'CellNumber' => $request->Phone,
+        ]);
 
-        $user = User::where('GenEntityID', Auth()->user()->GenEntityID)->first();
+        $entity = Entity::where('GenEntityID', $genEntityID)->update($userEntity);
 
-        if(is_null($user))
-        {
-            return redirect()->back()->with([
-                'status' => 'failed',
-                'message' => 'User not found'
-            ]); 
-        }
+        $vipUser = array_filter([
+            'VIPUserName' =>  $request->UserName,
+        ]);
 
-        $user->is_on_leave = 1;
-        $user->type_of_leave = $request->leave_id;
-        $user->leave_started = $created_day;
-        $user->save();
+        $vip = User::where('GenEntityID', $genEntityID)->update($vipUser);
+
+        $userRole = UserRole::updateOrCreate([
+            'GenEntityID' => $genEntityID],
+            [
+            'role_id' => $request->role_id,
+            'created_at' => Carbon::now(),
+            'updated_at' => Carbon::now(),
+        ]);
+
+        $createSupervisor = UserSupervisor::updateOrCreate([
+            'GenEntityID' => $genEntityID],
+            [
+            'primary_supervisor' => $request->supervisor_id,
+            'primary_supervisor' => $request->supervisor_id,
+            'secondary_supervisor' => $secondary_supervisor_id,
+            'start_date' => $start_date,
+            'end_date' => $end_date,
+            'created_at' => Carbon::now(),
+            'updated_at' => Carbon::now(),
+        ]);
 
         return redirect()->back()->with([
             'status' => 'success',
-            'message' => 'Successfully apply for leave'
+            'message' => 'Successfully created a new timesheet'
         ]);
 
-        // 'FirstName' => '',
+
+        //update
+
+
+                // 'FirstName' => '',   
         // 'LastName' => '',
         // 'UserName' => '',
-        // 'Email' => '',
-        // 'Phone' => '',
-        // 'role_id' => '',
+        // 'Email' => '', 
+        // 'Phone' => '', CellNumber
+        // 'role_id' => '', .\// user role
+
+
+
         // 'supervisor_id' => '',
         // 'secondary_supervisor_id' => '',
         // 'date_from' => '',
         // 'date_to' => '',
+        // $created_day = Carbon::createFromFormat('d/m/Y', $request->leave_started)->format('Y-m-d H:i:s');
+
+        // $user = User::where('GenEntityID', Auth()->user()->GenEntityID)->first();
+
+        // if(is_null($user))
+        // {
+        //     return redirect()->back()->with([
+        //         'status' => 'failed',
+        //         'message' => 'User not found'
+        //     ]); 
+        // }
+
+        // $user->is_on_leave = 1;
+        // $user->type_of_leave = $request->leave_id;
+        // $user->leave_started = $created_day;
+        // $user->save();
+
+        // return redirect()->back()->with([
+        //     'status' => 'success',
+        //     'message' => 'Successfully apply for leave'
+        // ]);
+
+
+
+
+        // $user = User::where('GenEntityID', Auth()->user()->GenEntityID)->first();
+
+        // if(is_null($user))
+        // {
+        //     return redirect()->back()->with([
+        //         'status' => 'failed',
+        //         'message' => 'User not found'
+        //     ]); 
+        // }
+
+        // $user->is_on_leave = 1;
+        // $user->type_of_leave = $request->leave_id;
+        // $user->leave_started = $created_day;
+        // $user->save();
+
+        // return redirect()->back()->with([
+        //     'status' => 'success',
+        //     'message' => 'Successfully apply for leave'
+        // ]);
+
+
 
         
         

@@ -6,6 +6,7 @@ use App\Models\Timesheet;
 use App\Models\UserRole;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Mail;
 
 class EmployeeAuthorizationController extends Controller
 {
@@ -36,27 +37,43 @@ class EmployeeAuthorizationController extends Controller
 
     public function approve(Request $request)
     {
-        dd("fddffdf");
-        dd($request);
+        $userRole = UserRole::where('GenEntityID', Auth()->user()->GenEntityID)->first();
 
-        //send Hr message
+        $getTimesheet = Timesheet::where('id', $request->id)->first();
 
-        // $user = UserRole::where('role_id', 1)->first();
+        if ($userRole->role->name == 'supervisor') { //supervisor
 
-        // $hrUser = User::entity($user->GenEntityID);
+            $getTimesheet->level = 2;
+            $getTimesheet->save();
 
-        // Mail::send('emails.approval', ['username' =>  $hrUser], function($message) use($request, $hrUser){
-        //     $message->to($hrUser->EmailAddress);
-        //     // $message->from('Wale from Handiwork');
-        //     $message->from($address = 'noreply@apin.com', $name = 'Wale from Apin');
-        //     $message->subject('Approval');
-        // });
+            // send hr mail 
 
-        
-        // return redirect()->back()->with([
-        //     'status' => 'success',
-        //     'message' => 'Successfully created a new timesheet'
-        // ]);
+            $user = UserRole::where('role_id', 1)->first();
 
+            $hrUser = User::entity($user->GenEntityID);
+    
+            Mail::send('emails.approval', ['username' =>  $hrUser], function($message) use($request, $hrUser){
+                $message->to($hrUser->EmailAddress);
+                // $message->from('Wale from Handiwork');
+                $message->from($address = 'noreply@apin.com', $name = 'Wale from Apin');
+                $message->subject('Approval');
+            });
+
+            return redirect()->back()->with([
+                'status' => 'success',
+                'message' => 'Successfully approve a new timesheet'
+            ]);
+        }
+        elseif($userRole->role->name == 'admin')
+        {
+            $getTimesheet->level = 3;
+            $getTimesheet->status = 'successful';
+            $getTimesheet->save();
+
+            return redirect()->back()->with([
+                'status' => 'success',
+                'message' => 'Successfully approve a new timesheet'
+            ]);
+        }
     }
 }

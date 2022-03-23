@@ -10,7 +10,7 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Carbon\Carbon;
-use Mail;
+use Illuminate\Support\Facades\Mail;
 use DateTime;
 
 class TimesheetController extends Controller
@@ -28,10 +28,17 @@ class TimesheetController extends Controller
 
     public function create(Request $request)
     {
+        $today = Carbon::today();
+        // dd($today);
+
+
+
         // $end = Carbon::parse($request->input('end_date'));
 
 
         // $endDate = Carbon::today()->addDays(1);
+
+     
 
         // $diff = now()->diffInDays($endDate);
 
@@ -45,8 +52,23 @@ class TimesheetController extends Controller
         // }
         // dd($diff);
 
+        // $supervisor = UserSupervisor::where('GenEntityID', Auth()->user()->GenEntityID)->first();
+
+        // dd($supervisor);
+
+        // $result = $today->gt($supervisor->end_date);
+        // dd($result);
+
         // $this->validateTimesheetTimeEntry();
         $created_day = Carbon::createFromFormat('d/m/Y', $request->date)->format('Y-m-d H:i:s');
+
+        if($today < $created_day)
+        {
+            return redirect()->back()->with([
+                'status' => false,
+                'message' => 'you cannot create time sheet for a day above today'
+            ]);
+        }
 
         $over_time = $request->time_worked > $this->overwork ? $request->time_worked - $this->overwork : 0;
 
@@ -70,7 +92,19 @@ class TimesheetController extends Controller
         // send mail here to supervisor 
         $supervisor = UserSupervisor::where('GenEntityID', Auth()->user()->GenEntityID)->first();
         // dd($supervisor);
-        $supervisorUser = User::entity($supervisor->primary_supervisor);
+
+
+        $userSupervisor = '';
+
+        if($supervisor->secondary_supervisor && $today->gt($supervisor->end_date) == false )
+        {
+            $userSupervisor = $supervisor->secondary_supervisor;
+        }
+        else{
+            $userSupervisor = $supervisor->primary_supervisor;
+        }
+
+        $supervisorUser = User::entity($userSupervisor);
 
         // dd($supervisorUser->EmailAddress);
         // $supervisorEmail = $supervisorUser->EmailAddress;
@@ -78,13 +112,13 @@ class TimesheetController extends Controller
         Mail::send('emails.approval', ['username' =>  $supervisorUser], function($message) use($request, $supervisorUser){
             $message->to($supervisorUser->EmailAddress);
             // $message->from('Wale from Handiwork');
-            $message->from($address = 'noreply@apin.com', $name = 'Wale from Apin');
+            $message->from($address = 'noreply@apin.com', $name = 'Shola from Apin');
             $message->subject('Approval');
         });
 
         
         return redirect()->back()->with([
-            'status' => 'success',
+            'status' => true,
             'message' => 'Successfully created a new timesheet'
         ]);
 
@@ -95,6 +129,8 @@ class TimesheetController extends Controller
     private function validateTimesheetTimeEntry()
     {
         $endDate = Carbon::today()->addDays(1);
+
+        // if($endate )
 
         //validate that user can create for the next day 
         // if()

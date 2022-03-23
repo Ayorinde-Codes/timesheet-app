@@ -5,7 +5,7 @@
 	<div class="header-left">
 		<a href="{{URL('/dashboard')}}" class="logo">
 			{{-- <img src="assets/img/logo.png" width="40" height="40" alt=""> --}}
-			<img src="{{URL::TO('assets/img/logo.png')}}" width="40" height="40" alt="">
+			<img src="{{URL::TO('assets/img/apin_logo.jpeg')}}" width="40" height="40" alt="">
 
 		</a>
 	</div>
@@ -45,7 +45,7 @@
 		<!-- /Search -->
 	
 		<!-- Notifications -->
-		<li class="nav-item dropdown">
+		{{-- <li class="nav-item dropdown">
 			<a href="#" class="dropdown-toggle nav-link" data-toggle="dropdown">
 				<i class="fa fa-bell-o"></i> <span class="badge badge-pill">3</span>
 			</a>
@@ -127,11 +127,11 @@
 					<a href="activities.html">View all Notifications</a>
 				</div>
 			</div>
-		</li>
+		</li> --}}
 		<!-- /Notifications -->
 		
 		<!-- Message Notifications -->
-		<li class="nav-item dropdown">
+		{{-- <li class="nav-item dropdown">
 			<a href="#" class="dropdown-toggle nav-link" data-toggle="dropdown">
 				<i class="fa fa-comment-o"></i> <span class="badge badge-pill">8</span>
 			</a>
@@ -233,7 +233,7 @@
 					<a href="chat.html">View all Messages</a>
 				</div>
 			</div>
-		</li>
+		</li> --}}
 		<!-- /Message Notifications -->
 
 		<li class="nav-item dropdown has-arrow main-drop">
@@ -244,8 +244,8 @@
 			</a>
 			<div class="dropdown-menu">
 				<a class="dropdown-item" href="{{URL::TO('profile')}}">My Profile</a>
-				<a class="dropdown-item" href="settings.html">Settings</a>
-				<a class="dropdown-item" href="login.html">Logout</a>
+				{{-- <a class="dropdown-item" href="settings.html">Settings</a> --}}
+				<a class="dropdown-item" href="{{ route('logout') }}">Logout</a>
 			</div>
 		</li>
 	</ul>

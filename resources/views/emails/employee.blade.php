@@ -1,7 +1,5 @@
-<!DOCTYPE html>
-<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:v="urn:schemas-microsoft-com:vml" xmlns:o="urn:schemas-microsoft-com:office:office">
-<head>
-  <title> Welcome to Apin </title>
+<!DOCTYPE html><html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:v="urn:schemas-microsoft-com:vml" xmlns:o="urn:schemas-microsoft-com:office:office"><head>
+  <title> Welcome to Handiwork </title>
   <!--[if !mso]><!-- -->
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
   <!--<![endif]-->
@@ -47,7 +45,7 @@
           <o:PixelsPerInch>96</o:PixelsPerInch>
         </o:OfficeDocumentSettings>
         </xml>
-        <![endif]-->
+        <![endif]--> 
   <!--[if lte mso 11]>
         <style type="text/css">
           .mj-outlook-group-fix { width:100% !important; }
@@ -170,7 +168,8 @@
                                   <tbody>
                                     <tr>
                                       <td style="width:150px;">
-                                        <img alt="Logo" height="auto" src="{{ asset('assets/img/apin_logo.jpeg') }}" style="border:0;display:block;outline:none;text-decoration:none;height:auto;width:100%;font-size:14px;" width="150" />
+                                        {{-- <img alt="Logo" height="auto" src="{{ asset('images/HandiworkLogo2.png') }}" style="border:0;display:block;outline:none;text-decoration:none;height:auto;width:100%;font-size:14px;" width="150" /> --}}
+                                        LOGO
                                       </td>
                                     </tr>
                                   </tbody>
@@ -270,9 +269,7 @@
                             </tr>
                             <tr>
                               <td align="left" style="font-size:0px;padding:10px 25px;word-break:break-word;">
-                                <div style="font-family:Quattrocento;font-size:18px;font-weight:400;line-height:24px;text-align:left;color:#000000;"> 
-                                   Hello, {{$username->VIPUserName}} kindly review and approve a timesheet sent to you.
-                                </div>
+                                <div style="font-family:Quattrocento;font-size:18px;font-weight:400;line-height:24px;text-align:left;color:#000000;"> </div>
                               </td>
                             </tr>
                             <tr>
@@ -285,7 +282,7 @@
                                 <table border="0" cellpadding="0" cellspacing="0" role="presentation" style="border-collapse:separate;line-height:100%;">
                                   <tbody><tr>
                                     <td align="center" bgcolor="#428dfc" role="presentation" style="border:none;border-radius:3px;cursor:auto;mso-padding-alt:10px 25px;background:#428dfc;" valign="middle">
-                                      <a href="http://127.0.0.1:8000/authorize_employee" style="display: inline-block; background: #428dfc; color: #ffffff; font-family: Quattrocento; font-size: 14px; font-weight: bold; line-height: 30px; margin: 0; text-decoration: none; text-transform: uppercase; padding: 10px 25px; mso-padding-alt: 0px; border-radius: 3px;" target="_blank"> View! </a>
+                                      <a href="https://handiwork.com.ng/login" style="display: inline-block; background: #428dfc; color: #ffffff; font-family: Quattrocento; font-size: 14px; font-weight: bold; line-height: 30px; margin: 0; text-decoration: none; text-transform: uppercase; padding: 10px 25px; mso-padding-alt: 0px; border-radius: 3px;" target="_blank"> View! </a>
                                     </td>
                                   </tr>
                                 </tbody></table>

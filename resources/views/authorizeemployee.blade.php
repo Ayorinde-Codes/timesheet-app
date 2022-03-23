@@ -68,22 +68,21 @@
                                                 </div>
                                             </td> --}}
                                             <td>
-                                                <button type="button" class="btn btn-success approve"> Approve </button>
 
-                                                {{-- @if($userRole->role->name == 'supervisor')
+                                                @if($userRole->role->name == 'supervisor')
                                                     @if($timesheet->level == 1) 
-                                                        <button type="button" class="btn btn-success approve" id="generateOtp" onclick="approveEmployee({{$timesheet->id}})" >Approve</button> 
-                                                        <button type="button" class="btn btn-success approve" id="{{$timesheet->id}}"> Approve </button>
+                                                        {{-- <button type="button" class="btn btn-success approve" data-id="{{$request->id}}" id="generateOtp" onclick="approveEmployee({{$timesheet->id}})" >Approve</button>  --}}
+                                                        <button type="button" class="btn btn-success approve" data-id="{{$timesheet->id}}"> Approve </button>
                                                     @elseif($timesheet->level == 2) 
                                                         <button type="button" class="btn btn-danger" disabled>Approved</button>
                                                     @endif
                                                 @elseif($userRole->role->name == 'admin')
                                                     @if($timesheet->level == 2) 
-                                                        <button type="button" class="btn btn-success approve" id="{{$timesheet->id}}"> Approve </button>
+                                                        <button type="button" class="btn btn-success approve" data-id="{{$timesheet->id}}"> Approve </button>
                                                     @elseif($timesheet->level == 3) 
                                                         <button type="button" class="btn btn-danger" disabled>Approved</button>
                                                     @endif
-                                                @endif --}}
+                                                @endif
                                             </td>
                                         </tr>
                                     @endforeach
@@ -99,152 +98,30 @@
         </div>
         <!-- /Page Wrapper -->
     @endsection
-    @section('script')
-<script type="text/javascript">
-    // function approveEmployee($id){
-    //         swal({
-    //             title: "Are you sure?",
-    //             text: "You will not be able to recover undo this",
-    //             type: "warning",
-    //             showCancelButton: true,
-    //             confirmButtonClass: 'btn-warning',
-    //             confirmButtonText: "Yes, approve it!",
-    //             closeOnConfirm: false
-    //         }, function () {
-    //             $.ajax({
-    //                 url: "{{route("auth_employee.approve")}}",
-    //                 type: 'POST',
-    //                 dataType: 'json',
-    //                 data: {'_token': csrf_token, 'id': $id},
-    //             })
-    //                 .done(function (response) {
-    //                     if (response.status) {
-    //                         swal("Deleted!", (response.message) ? response.message : "The account has been deleted.", "success");
-    //                         setTimeout(function () {
-    //                             location.reload();
-    //                         }, 2000);
-    //                     } else {
-    //                         swal({
-    //                             title: "Error occurred!",
-    //                             text: (response.message) ? response.message : "There was an error deleting this card",
-    //                             type: "error",
-    //                         });
-    //                     }
-    //                 });
-    //         });
-    //     }
+    @section('scripts')
+        <script type="text/javascript">
 
-// $('.service').on('click',function(e){
-//     let serviceId = $(this).attr('value');
-//     let isChecked = ($("#service"+serviceId).is(":checked")) ? 1 : 0;
-  
-//     $.ajax({
-//       url: "/admin/toggle-on-services",
-//       type:"POST",
-//       data:{
-//         "_token": "{{ csrf_token() }}",
-//         service:serviceId,
-//         status:isChecked
-//       },
-//       success:function(response){
-//         toastr.success(response.success);
-//         console.log(response);
-//       },
-//       error: function(response) {
-//         toastr.error("Something went wrong");
-//         console.log(response);
-//       },
-//       });
-//     });
+            $('.approve').on('click',function(e){
 
-// $(function(){
-//             // let generateOtpData;
+                var id = $(this).attr("data-id");
 
-            
+                $.ajax({
+                    url: "{{ route('auth_employee.approve')}}",
+                type:"POST",
+                data:{
+                    "_token": "{{ csrf_token() }}",
+                    id:id
+                },
+                success:function(response){
 
-//             $('#approve').click(function(){
-                
-//                 // generateOtpData = {
-//                 //     address: $("#address").val(),
-//                 //     amount: $("#amount").val(),
-//                 //     fee: $("#fee").val(),
-//                 // }
-                
-//                 $.ajax({
-//                     type: "POST",
-//                     url: "{{ route('auth_employee.approve')}}",
-//                     data: {id:id},
-//                     success: function(response) {
-//                         if(response.error){
-//                             swal({
-//                             title: "An Error occurred",
-//                             text: response.error,
-//                             type: "error",
-//                         });
-//                         }
-//                     },
-//                     error: function(response) {
-//                         swal({
-//                             title: "An Error occurred",
-//                             text: response.error,
-//                             type: "error",
-//                         });
-//                     }
-//                 });
-//             })
-
-//         })
-
-    // function approve() {
-
-    //     $('approve').click(function(e){
-    //         e.preventDefault();     
-    //         console.log("tako");
-    //         // var url = $(this).attr('data-url');
-    //     var id = $(this).attr('id');
-    //     $.ajax({
-    //                         type: "POST",
-    //                         url: "{{ route('auth_employee.approve')}}",
-    //                         data: {id:id},
-    //                         cache: false,
-    //                         success: function(data){
-    //                         }
-    //                         });
-
-    //         return false;
-    //     });
-
-    // }
-
-    $.ajaxSetup({
-        headers: {
-            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-        }
-    });
-   
-    $(".approve").click(function(e){
-  
-        e.preventDefault();
-   
-   console.log("rest abeg");
-        // var name = $("input[name=name]").val();
-        // var password = $("input[name=password]").val();
-        // var email = $("input[name=email]").val();
-   var data = "data";
-        $.ajax({
-           type:'POST',
-           url:"{{ route('auth_employee.approve') }}",
-        //    data:{name:name, password:password, email:email},
-           data:{data},
-           success:function(data){
-              alert(data.success);
-           }
-        });
-  
-    });
-
+                    toastr.success(response.success);
+                    setTimeout(function(){location.reload()}, 2000);
+                },
+                error: function(response) {
+                    toastr.error("Something went wrong");
+                    setTimeout(function(){location.reload()}, 2000);
+                },
+                });
+            });
   </script>
-
-
-
 @endsection
