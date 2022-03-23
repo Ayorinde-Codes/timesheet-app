@@ -23,6 +23,12 @@
                         <a href="#" class="btn add-btn" data-toggle="modal" data-target="#add_todaywork"><i class="fa fa-plus"></i> Add Today Work</a>
                     </div>
                 </div>
+                @if(session()->has('status'))
+                    <div class="alert alert-{{ session()->get('status') }} fade in">
+                    <button type="button" class="close" data-dismiss="alert" aria-hidden="true">�</button>
+                    {{ session()->get('message') }}
+                    </div>
+                @endif
             </div>
             <!-- /Page Header -->
 
@@ -50,6 +56,7 @@
                                     <th class="text-center">Over Time (Hours)</th>
                                     <th class="d-none d-sm-table-cell">Description</th>
                                     <th>Created Date</th>
+                                    <th>Status</th>
                                     <th class="text-right">Actions</th>
                                 </tr>
                             </thead>
@@ -76,6 +83,7 @@
                                         <td>{{$timesheet->over_time}}</td>
                                         <td>{{$timesheet->description}}</td>
                                         <td>{{$timesheet->created_at}}</td>
+                                        <td>{{$timesheet->status}}</td>
                                         {{-- <td>{{$timesheet->2019</td> --}}
                                         {{-- <td>
                                             <h2>Office Management</h2>

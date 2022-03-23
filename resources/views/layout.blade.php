@@ -49,7 +49,9 @@
     
 <nav class="navbar navbar-expand-lg navbar-light navbar-laravel">
     <div class="container">
-        <a class="navbar-brand" href="#">Laravel</a>
+        <a class="navbar-brand" href="#">
+            <img src="{{ asset('assets/img/apin_logo.jpeg') }}" />
+        </a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
@@ -60,9 +62,9 @@
                     <li class="nav-item">
                         <a class="nav-link" href="{{ route('login') }}">Login</a>
                     </li>
-                    <li class="nav-item">
+                    {{-- <li class="nav-item">
                         <a class="nav-link" href="{{ route('register') }}">Register</a>
-                    </li>
+                    </li> --}}
                 @else
                     <li class="nav-item">
                         <a class="nav-link" href="{{ route('logout') }}">Logout</a>

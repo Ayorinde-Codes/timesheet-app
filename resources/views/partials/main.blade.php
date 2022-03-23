@@ -32,6 +32,8 @@
 		
 		<!-- Main CSS -->
         <link rel="stylesheet" href="{{URL::TO('assets/css/style.css')}}">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css" />
+
 		
         {{-- <script src = "https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script> --}}
 		<!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->

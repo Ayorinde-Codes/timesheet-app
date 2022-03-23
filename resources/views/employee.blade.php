@@ -106,7 +106,7 @@
                                             <a href="#" class="action-icon dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i class="material-icons">more_vert</i></a>
                                             <div class="dropdown-menu dropdown-menu-right">
                                                 <a class="dropdown-item edit-user-button" href="#" data-toggle="modal" data-target="#edit_user_{{$employee->GenEntityID}}" id="editUser"><i class="fa fa-pencil m-r-5"></i> Edit</a>
-                                                <a class="dropdown-item" href="#" data-toggle="modal" data-target="#delete_user"><i class="fa fa-trash-o m-r-5"></i> Delete</a>
+                                                {{-- <a class="dropdown-item" href="#" data-toggle="modal" data-target="#delete_user"><i class="fa fa-trash-o m-r-5"></i> Delete</a> --}}
                                             </div>
                                         </div>
                                     </td>
@@ -127,6 +127,8 @@
                                                         @csrf
                                                     {{-- <form employee.update> --}}
                                                         <div class="row">
+                                                                <input type="hidden" value="{{$employee->GenEntityID}}" name="GenEntityID" />
+
                                                             <div class="col-sm-6">
                                                                 <div class="form-group">
                                                                     <label>First Name <span class="text-danger">*</span></label>
@@ -160,7 +162,7 @@
                                                             <div class="col-sm-6">
                                                                 <div class="form-group">
                                                                     <label>Role</label>
-                                                                    <select  name="role_id" id="role_id" class="select1">
+                                                                    <select  name="role_id" id="role_id" required class="select1">
                                                                         <option></option>
                                                                         @foreach($roles as $role)
                                                                             <option value={{ $role->id }}>{{\Str::ucfirst($role->name) }}</option>
@@ -169,11 +171,10 @@
                                                                     
                                                                 </div>
                                                             </div>
-
                                                             <div class="col-sm-6">
                                                                 <div class="form-group">
                                                                     <label>Assign Supervisor</label>
-                                                                    <select  name="supervisor_id" id="supervisor_id" class="select2">
+                                                                    <select  name="supervisor_id" id="supervisor_id" required class="select2">
                                                                         <option></option>
                                                                         @foreach($supervisors as $supervisor)
                                                                             @php
