@@ -4,11 +4,13 @@ namespace App\Http\Controllers;
 
 use App\Models\Entity;
 use App\Models\Role;
+use App\Models\Timesheet;
 use App\Models\User;
 use App\Models\UserRole;
 use App\Models\UserSupervisor;
 use Illuminate\Http\Request;
 use Carbon\Carbon;
+
 class EmployeeController extends Controller
 {
     public function index()
@@ -84,71 +86,186 @@ class EmployeeController extends Controller
         ]);
 
 
-        //update
+    }
 
+    public function details($id)
+    {
+        // 20th of last month and 30th of next month
 
-                // 'FirstName' => '',   
-        // 'LastName' => '',
-        // 'UserName' => '',
-        // 'Email' => '', 
-        // 'Phone' => '', CellNumber
-        // 'role_id' => '', .\// user role
+        $user =Entity::where('GenEntityID', $id)->first();
 
+        $now = Carbon::now();
 
+        $dateStart = Carbon::createFromFormat('Y-m-d', $now->year.'-'.$now->month.'-21')->subMonth();
 
-        // 'supervisor_id' => '',
-        // 'secondary_supervisor_id' => '',
-        // 'date_from' => '',
-        // 'date_to' => '',
-        // $created_day = Carbon::createFromFormat('d/m/Y', $request->leave_started)->format('Y-m-d H:i:s');
-
-        // $user = User::where('GenEntityID', Auth()->user()->GenEntityID)->first();
-
-        // if(is_null($user))
-        // {
-        //     return redirect()->back()->with([
-        //         'status' => 'failed',
-        //         'message' => 'User not found'
-        //     ]); 
-        // }
-
-        // $user->is_on_leave = 1;
-        // $user->type_of_leave = $request->leave_id;
-        // $user->leave_started = $created_day;
-        // $user->save();
-
-        // return redirect()->back()->with([
-        //     'status' => 'success',
-        //     'message' => 'Successfully apply for leave'
-        // ]);
+        // $dateEnd = Carbon::now()->format('Y-m-d');
+        $dateEnd = Carbon::now()->endOfMonth()->format('Y-m-d');
+        // dd($dateStart);
+        // $transactions = $this->filterDate($transactions, $request->input('date'));
 
 
 
+        // $Date1 = '01-10-2010';
+        // $Date2 = '31-11-2010';
+        
+        // Declare an empty array
+        $dateHeader = array();
+        
+        // Use strtotime function
+        $Variable1 = strtotime($dateStart);
+        $Variable2 = strtotime($dateEnd);
+        
+        // Use for loop to store dates into array
+        // 86400 sec = 24 hrs = 60*60*24 = 1 day
+        for ($currentDate = $Variable1; $currentDate <= $Variable2; $currentDate += (86400) ) {
+                                            
+            $Store = date('Y-m-d', $currentDate);
+            $dateHeader[] = $Store;
+        }
+        
+        // Display the dates in array format
+        // dd($dateHeader);
+        
+        $allDateHeader = collect($dateHeader);
 
-        // $user = User::where('GenEntityID', Auth()->user()->GenEntityID)->first();
+    // dd( $allDateHeader); date('Y-m-d',strtotime($value->created_at))
 
-        // if(is_null($user))
-        // {
-        //     return redirect()->back()->with([
-        //         'status' => 'failed',
-        //         'message' => 'User not found'
-        //     ]); 
-        // }
+    // $resultMontly = array_filter($data, function($element) use ($start_month_date, $end_date){
 
-        // $user->is_on_leave = 1;
-        // $user->type_of_leave = $request->leave_id;
-        // $user->leave_started = $created_day;
-        // $user->save();
+    //     return $element['PostingDate'] <= $end_date && $element['PostingDate'] >= $start_month_date;
+    // });
 
-        // return redirect()->back()->with([
-        //     'status' => 'success',
-        //     'message' => 'Successfully apply for leave'
-        // ]);
+        $userSheet = [];
 
+        $getUserTimesheet = Timesheet::where('GenEntityID', $id)->whereBetween('timesheets.created_at', [$dateStart, $dateEnd])->orderBy('created_at', 'asc')->get();
+        
+        $newTimesheet = $getUserTimesheet->toArray();
 
+        $userSheet = call_user_func_array("array_merge", $newTimesheet);
 
         
+
+// dd($userSheet);
+// dd(($userSheet['created_at']));
+// dd(date_create($userSheet['created_at']), 'Y-m-d');
+
+        // $keys = array_values($allDateHeader);
+
+
+        // $diff = array_diff($keys, $userSheet);
+
+        // dd($allDateHeader);
+
+
+//         foreach ($keys as $k)
+//         {
+//             // dd(gettype($k));
+//             // dd(gettype( date('Y-m-d',strtotime($userSheet['created_at']))));
+
+//             // $date = date('Y-m-d',strtotime($userSheet['created_at']));
+
+//             dd($k);
+//             // dd(array_values($userSheet));
+//             // dd(date_create($userSheet['created_at']), 'Y-m-d');
+
+//             if (!isset(date_format(date_create($userSheet['created_at']), 'Y-m-d')[$k] )) date_format(date_create($userSheet['created_at']), 'Y-m-d')[$k] = '0';
+//             // if (!isset($userSheet['created_at'][$k])) $userSheet['created_at'][$k] = '0';
+
+//             // dd($getUserTimesheet);
+// //             foreach ($getUserTimesheet as $key => $value) {
+// // dd($k);
+// //                 dd(date('Y-m-d',strtotime($value->created_at)));
+// //                 if (!is_null(date('Y-m-d',strtotime($value->created_at))[$k])) date('Y-m-d',strtotime($value->created_at))[$k] = '0';
+
+// //             }
+//         }
+
+
+        // foreach ($getUserTimesheet as $key => $value) {
+            
+        //     if(!isset($allDateHeader[date('Y-m-d',strtotime($value->created_at))])) $value = 0;
+        // }
+
+        // dd(gettype($allDateHeader));
+
+
+
+
+        // dd( array_values() $getUserTimesheet->toArray());
+
+        // $newTimesheet = $getUserTimesheet->toArray();
+
+        // $arrayColumn = array_column($newTimesheet, 'created_at');
+
+        // dd(array_column($newTimesheet, 'created_at'));
+
+        // dd(date('Y-m-d',strtotime($arrayColumn)));
+        // $dt = [];
+
+        // foreach ($arrayColumn as $key => $value) {
+            
+        //     array_push($dt, date('Y-m-d',strtotime($value)));
+        // }
+        // dd($dt);
+
+
+        // dd( array_diff($allDateHeader, $dt) );
+        // $keys = array_keys($allDateHeader);
+        // foreach ($allDateHeader as $k)
+        // {
+        //     if (!isset($a2[$k])) $a2[$k] = '0';
+        // }
+        // print_r($a2);
+
+
+
+        // foreach ($getUserTimesheet as $key => $value) {
+            
+
+        //     // dd($value);
+
+        //     $result = array_filter($allDateHeader, function($element) use ($value){
+
+        //         // return $element['PostingDate'] <= $end_date && $element['PostingDate'] >= $start_month_date;
+        //     });
+
+
+
+
+        //   $data =  in_array(date('Y-m-d',strtotime($value->created_at)),  $allDateHeader)  ? $value->time_worked : '-';
+
+        //     array_push($userSheet, $data);
+        // }
+        // dd($userSheet);
+
+        // dd(gettype($getUserTimesheet));
+
+        return view('view-timesheet', compact('getUserTimesheet', 'user', 'allDateHeader'));
+
+        dd($getUserTimesheet);
+
+        // $getUserTimesheet = Timesheet::where('GenEntityID', $id)->get();
+    }
+
+    private function isWeekendAndPublicHolidays($date)
+    {            
+        $date1 = strtotime($date);
+
+        // Get day name from the date
+        $date2 = date("l", $date1);
         
+        // Convert day name to lower case
+        $date3 = strtolower($date2);
+        // Check if day name is "saturday" or "sunday"
+
+        if(($date3 == "saturday" )|| ($date3 == "sunday"))
+        {
+            return 'true';
+        } 
+        else
+        {
+            return 'false';
+        }    
     }
 }
 

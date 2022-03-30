@@ -106,6 +106,7 @@
                                             <a href="#" class="action-icon dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i class="material-icons">more_vert</i></a>
                                             <div class="dropdown-menu dropdown-menu-right">
                                                 <a class="dropdown-item edit-user-button" href="#" data-toggle="modal" data-target="#edit_user_{{$employee->GenEntityID}}" id="editUser"><i class="fa fa-pencil m-r-5"></i> Edit</a>
+                                                <a class="dropdown-item" href="{{URL('employee/'.$employee->GenEntityID)}}"  id="viewUser"><i class="fa fa-pencil m-r-5"></i> View</a>
                                                 {{-- <a class="dropdown-item" href="#" data-toggle="modal" data-target="#delete_user"><i class="fa fa-trash-o m-r-5"></i> Delete</a> --}}
                                             </div>
                                         </div>
