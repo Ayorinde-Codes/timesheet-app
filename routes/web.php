@@ -52,6 +52,7 @@ Route::post('/timesheet/delete', [TimesheetController::class, 'create'])->name('
 // });
 //Employee
 Route::get('/employees', [EmployeeController::class, 'index'])->name('employee.index');
+Route::get('/employee/{id}', [EmployeeController::class, 'details'])->name('employee.details');
 Route::post('/employee/create', [EmployeeController::class, 'create'])->name('employee.create');
 Route::post('/employee/update', [EmployeeController::class, 'editEmployee'])->name('employee.update');
 Route::post('/employee/delete', [EmployeeController::class, 'create'])->name('employee.delete');

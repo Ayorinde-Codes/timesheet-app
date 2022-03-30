@@ -29,7 +29,6 @@ class TimesheetController extends Controller
     public function create(Request $request)
     {
         $today = Carbon::today();
-        // dd($today);
 
 
 
@@ -60,9 +59,40 @@ class TimesheetController extends Controller
         // dd($result);
 
         // $this->validateTimesheetTimeEntry();
+
         $created_day = Carbon::createFromFormat('d/m/Y', $request->date)->format('Y-m-d H:i:s');
 
-        if($today < $created_day)
+        // date('Y-m-d', strtotime($getUserTimesheet[$key]->created_at) )
+        // if(date('Y-m-d', strtotime($today)) < date('Y-m-d', strtotime($created_day)))
+        // {
+        //     dd("yes");
+
+        // }
+        // else{
+        //     dd("no");
+        // }
+        // var_dump($today);
+
+        // dd(date("Y-m-d"));
+        // $posts = Timesheet::where('project_id', $request->project_id)->whereDate('created_at', Carbon::today())->first();
+
+        // dd($posts);
+
+
+        // $timesheetChecks = Timesheet::where('project_id', $request->project_id)->where('created_at', 'like', '%'.date("Y-m-d")."%")->get();
+
+        // dd($timesheetChecks);
+
+        if( Timesheet::where('project_id', $request->project_id)->whereDate('created_at', Carbon::today())->exists())
+        {
+
+            return redirect()->back()->with([
+                'status' => false,
+                'message' => 'you cannot create time sheet for a project that exist'
+            ]);
+        }
+
+        if(date('Y-m-d', strtotime($today)) < date('Y-m-d', strtotime($created_day)))
         {
             return redirect()->back()->with([
                 'status' => false,
@@ -79,11 +109,13 @@ class TimesheetController extends Controller
             'status' => Timesheet::PROCESSING,
             'description' => $request->description,
             'time_worked' => $request->time_worked,
-            'standard_time' => $request->time_worked,
+            'standard_time' => $this->overwork,
             'over_time' => $over_time,
             'created_at' => $created_day,
             'updated_at' => $created_day,
         ];
+
+        // dd($timeSheet);
         
         Timesheet::create($timeSheet);
 
@@ -91,8 +123,6 @@ class TimesheetController extends Controller
 
         // send mail here to supervisor 
         $supervisor = UserSupervisor::where('GenEntityID', Auth()->user()->GenEntityID)->first();
-        // dd($supervisor);
-
 
         $userSupervisor = '';
 
@@ -111,20 +141,47 @@ class TimesheetController extends Controller
 
         Mail::send('emails.approval', ['username' =>  $supervisorUser], function($message) use($request, $supervisorUser){
             $message->to($supervisorUser->EmailAddress);
-            // $message->from('Wale from Handiwork');
             $message->from($address = 'noreply@apin.com', $name = 'Shola from Apin');
             $message->subject('Approval');
         });
 
-        
         return redirect()->back()->with([
             'status' => true,
             'message' => 'Successfully created a new timesheet'
         ]);
-
-        
     }
 
+    public function details($id)
+    {
+        // 20th of last month and 30th of next month
+
+        $now = Carbon::now();
+
+        $dateStart = Carbon::createFromFormat('Y-m-d', $now->year.'-'.$now->month.'-21')->subMonth();
+
+        $dateEnd = Carbon::now()->format('Y-m-d');
+        // dd($dateStart);
+        // $transactions = $this->filterDate($transactions, $request->input('date'));
+
+
+
+
+
+        $getUserTimesheet = Timesheet::where('GenEntityID', $id)->whereBetween('timesheets.created_at', [$dateStart, $dateEnd])->latest();
+
+        dd($getUserTimesheet);
+
+        // $getUserTimesheet = Timesheet::where('GenEntityID', $id)->get();
+    }
+
+    private function filterDate($timeSheet, $dates)
+    {
+        $dates = htmlspecialchars_decode($dates);
+        $dates = explode('-', $dates);
+
+        return $timeSheet->where('timesheets.updated_at', '>=', Carbon::parse($dates[0])->format('Y-m-d H:i:s'))
+            ->where('timesheets.updated_at', '<=', Carbon::parse($dates[1])->format('Y-m-d H:i:s'));
+    }
             
     private function validateTimesheetTimeEntry()
     {

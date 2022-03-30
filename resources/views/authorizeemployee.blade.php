@@ -115,11 +115,11 @@
                 success:function(response){
 
                     toastr.success(response.success);
-                    setTimeout(function(){location.reload()}, 2000);
+                    // setTimeout(function(){location.reload()}, 2000);
                 },
                 error: function(response) {
                     toastr.error("Something went wrong");
-                    setTimeout(function(){location.reload()}, 2000);
+                    // setTimeout(function(){location.reload()}, 2000);
                 },
                 });
             });
