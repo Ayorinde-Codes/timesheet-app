@@ -1,15 +1,6 @@
 @extends('partials.main')
 
     @section('content')
-    {{-- <div class="onoffswitch">
-        <input type="checkbox" name="onoffswitch" class="onoffswitch-checkbox" id="switch_sick" checked>
-        <label class="onoffswitch-label" for="switch_sick">
-            <span class="onoffswitch-inner"></span>
-            <span class="onoffswitch-switch"></span>
-        </label>
-    </div> --}}
-
-        <!-- Page Wrapper -->
         <div class="page-wrapper">
 			
             <!-- Page Content -->

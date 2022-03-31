@@ -26,6 +26,12 @@
                            
                         </div>
                         
+                        @if(session()->has('status'))
+                            <div class="alert alert-{{ session()->get('status') }}">
+                                <button type="button" class="close" data-dismiss="alert" aria-hidden="true"> x </button>
+                                {{ session()->get('message') }}
+                            </div>
+                        @endif
                         <!-- /Page Header -->
                         
                         <div class="row">

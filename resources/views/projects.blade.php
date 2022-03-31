@@ -24,6 +24,12 @@
             </div>
             <!-- /Page Header -->
             
+                    @if(session()->has('status'))
+                        <div class="alert alert-{{ session()->get('status') }}">
+                            <button type="button" class="close" data-dismiss="alert" aria-hidden="true"> x </button>
+                            {{ session()->get('message') }}
+                        </div>
+                    @endif
 
             <div class="row">
                 <div class="col-md-12">
@@ -122,6 +128,7 @@
                     </div>
                     <div class="modal-body">
                         <form>
+                            @csrf
                             <div class="row">
                                 <div class="col-sm-6">
                                     <div class="form-group">

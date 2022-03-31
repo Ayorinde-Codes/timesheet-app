@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Models\Absence;
 use App\Models\User;
+use App\Models\UserRole;
+use App\Models\Timesheet;
 use Illuminate\Http\Request;
 use Carbon\Carbon;
 
@@ -62,34 +64,83 @@ class AbsenceController extends Controller
         ]);
     }
 
-    public function supervisorpproveLeave(Request $request)
+    public function viewLeave()
     {
-        // $created_day = Carbon::createFromFormat('d/m/Y', $request->leave_started)->format('Y-m-d H:i:s');
+        $userRole = UserRole::where('GenEntityID', Auth()->user()->GenEntityID)->first();
 
-        // $user = User::where('GenEntityID', Auth()->user()->GenEntityID)->first();
+        $absence_leave = [];
 
-        $leave = User::where('approved_by', 'employee')->first();
-
-        if(is_null($leave))
-        {
+        if($userRole->role->name == 'employee'){ //employee
             return redirect()->back()->with([
                 'status' => 'failed',
-                'message' => 'leave not found'
-            ]); 
+                'message' => 'Employee not allowed'
+            ]);
         }
 
-        // $user->is_on_leave = 1;
-        // $leave->type_of_leave = $request->leave_id;
-        $leave->approved_by = 'supervisor';
-        // $leave->leave_started = $created_day;
-        $leave->save();
+        elseif ($userRole->role->name == 'supervisor') { //supervisor
 
-        // send hr mail
+            $absence_leave = User::where('approved_by', 'employee')->get();
 
-        return redirect()->back()->with([
-            'status' => 'success',
-            'message' => 'Successfully apply for leave'
-        ]);
+        }
+        elseif ($userRole->role->name == 'admin') { //admin
+
+            $absence_leave = User::where('approved_by', 'supervisor')->get();
+        }
+
+        return view('view-employee-leave', compact('absence_leave', 'userRole'));
+    }
+
+    public function approveLeave(Request $request)
+    {
+        $userRole = UserRole::where('GenEntityID', Auth()->user()->GenEntityID)->first();
+
+
+        if ($userRole->role->name == 'supervisor') {
+
+            $leave = User::where('GenEntityID', $request->id)->where('approved_by', 'employee')->first();
+
+            if(is_null($leave))
+            {
+                return redirect()->back()->with([
+                    'status' => 'failed',
+                    'message' => 'leave not found'
+                ]); 
+            }
+    
+            $leave->approved_by = 'supervisor';
+            $leave->save();
+    
+            // send hr mail
+    
+            return redirect()->back()->with([
+                'status' => 'success',
+                'message' => 'Successfully apply for leave'
+            ]);
+        }
+
+        elseif ($userRole->role->name == 'admin'){
+
+            $leave = User::where('GenEntityID', $request->id)->where('approved_by', 'supervisor')->first();
+
+            if(is_null($leave))
+            {
+                return redirect()->back()->with([
+                    'status' => 'failed',
+                    'message' => 'leave not found'
+                ]); 
+            }
+
+            $leave->is_on_leave = 1;
+            $leave->approved_by = 'admin';
+            $leave->save();
+
+            // send users mail approve
+            return redirect()->back()->with([
+                'status' => 'success',
+                'message' => 'Successfully apply for leave'
+            ]);
+        }
+       
     }
 
 
@@ -99,7 +150,7 @@ class AbsenceController extends Controller
 
         // $user = User::where('GenEntityID', Auth()->user()->GenEntityID)->first();
 
-        $leave = User::where('approved_by', 'supervisor')->first();
+        $leave = User::where('GenEntityID', $request->id)->where('approved_by', 'supervisor')->first();
 
         if(is_null($leave))
         {
