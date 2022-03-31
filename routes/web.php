@@ -43,6 +43,7 @@ Route::get('logout', [AuthController::class, 'logout'])->name('logout');
 
 //timesheet
 Route::get('/timesheet', [TimesheetController::class, 'index'])->name('timesheet.index');
+Route::get('/user/timesheet', [TimesheetController::class, 'userTimesheet'])->name('timesheet.index');
 // Route::post('/timesheet/create', [TimesheetController::class, 'create'])->name('timesheet.create');
 Route::post('/timesheet/update', [TimesheetController::class, 'create'])->name('timesheet.update');
 Route::post('/timesheet/delete', [TimesheetController::class, 'create'])->name('timesheet.delete');
@@ -66,13 +67,14 @@ Route::post('/project/delete', [ProjectController::class, 'create'])->name('proj
 //Absence
 Route::get('/absence', [AbsenceController::class, 'index'])->name('absence.index');
 Route::get('/user/leave', [AbsenceController::class, 'userLeave'])->name('user.leave');
-Route::post('/user/leave', [AbsenceController::class, 'userLeaveApply'])->name('user.leave.apply');
+Route::post('/apply/leave', [AbsenceController::class, 'userLeaveApply'])->name('user.leave.apply');
+Route::get('/view/leave', [AbsenceController::class, 'viewLeave'])->name('view.leave');
 Route::post('/absence/create', [AbsenceController::class, 'create'])->name('absence.create');
-Route::post('/absence/update', [AbsenceController::class, 'create'])->name('absence.update');
-Route::post('/absence/delete', [AbsenceController::class, 'create'])->name('absence.delete');
+Route::post('/absence/update', [AbsenceController::class, 'update'])->name('absence.update');
+Route::post('/approve/leave', [AbsenceController::class, 'approveLeave'])->name('approve.leave');
 
 
-//My profile
+//My profile    view/leave  user/timesheet
 Route::get('/profile', [ProfileController::class, 'index'])->name('profile.index');
 Route::post('/profile/create', [ProfileController::class, 'create'])->name('profile.create');
 Route::post('/profile/update', [ProfileController::class, 'create'])->name('profile.update');

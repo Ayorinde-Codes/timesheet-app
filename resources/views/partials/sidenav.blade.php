@@ -25,6 +25,9 @@
                     <a href="{{ URL('timesheet') }}"><i class="la la-calendar"></i> <span>Timesheet</span></a>
                 </li>   
                 <li> 
+                    <a href="{{ URL('user/timesheet') }}"><i class="la la-calendar"></i> <span>My Timesheet</span></a>
+                </li>  
+                <li> 
                     <a href="{{ URL('absence') }}"><i class="la la-user-times"></i> <span>Absence (Leave)</span></a>
                 </li>               
                 <li> 
@@ -35,6 +38,9 @@
                 </li>
                 <li> 
                     <a href="{{ URL('user/leave') }}"><i class="la la-user-times"></i> <span> Employee Leave</span></a>
+                </li>
+                <li> 
+                    <a href="{{ URL('view/leave') }}"><i class="la la-user-times"></i> <span> View Employee Leave</span></a>
                 </li>
             </ul>
         </div>
