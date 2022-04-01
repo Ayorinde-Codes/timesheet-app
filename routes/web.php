@@ -38,19 +38,21 @@ Route::get('login', [AuthController::class, 'index'])->name('login');
 Route::post('post-login', [AuthController::class, 'postLogin'])->name('login.post'); 
 Route::get('registration', [AuthController::class, 'registration'])->name('register');
 Route::post('post-registration', [AuthController::class, 'postRegistration'])->name('register.post'); 
+
+Route::group(['middleware' => 'auth' ], function () {
+
 Route::get('dashboard', [AuthController::class, 'dashboard']); 
 Route::get('logout', [AuthController::class, 'logout'])->name('logout');
 
 //timesheet
+
 Route::get('/timesheet', [TimesheetController::class, 'index'])->name('timesheet.index');
 Route::get('/user/timesheet', [TimesheetController::class, 'userTimesheet'])->name('timesheet.index');
 // Route::post('/timesheet/create', [TimesheetController::class, 'create'])->name('timesheet.create');
 Route::post('/timesheet/update', [TimesheetController::class, 'create'])->name('timesheet.update');
 Route::post('/timesheet/delete', [TimesheetController::class, 'create'])->name('timesheet.delete');
-// Route::group(['middleware' => 'auth' ], function () {
     Route::post('/timesheet/create', [TimesheetController::class, 'create'])->name('timesheet.create');
 
-// });
 //Employee
 Route::get('/employees', [EmployeeController::class, 'index'])->name('employee.index');
 Route::get('/employee/{id}', [EmployeeController::class, 'details'])->name('employee.details');
@@ -61,7 +63,7 @@ Route::post('/employee/delete', [EmployeeController::class, 'create'])->name('em
 //Projects
 Route::get('/projects', [ProjectController::class, 'index'])->name('project.index');
 Route::post('/project/create', [ProjectController::class, 'create'])->name('project.create');
-Route::post('/project/update', [ProjectController::class, 'create'])->name('project.update');
+Route::post('/project/update', [ProjectController::class, 'update'])->name('project.update');
 Route::post('/project/delete', [ProjectController::class, 'create'])->name('project.delete');
 
 //Absence
@@ -84,3 +86,5 @@ Route::post('/profile/delete', [ProfileController::class, 'create'])->name('prof
 Route::get('/authorize_employee', [EmployeeAuthorizationController::class, 'index'])->name('auth_employee.index');
 Route::post('/authorize_employee', [EmployeeAuthorizationController::class, 'approve'])->name('auth_employee.approve');
 // Route::post('/authorize_employee', [EmployeeAuthorizationController::class, 'approve'])->name('auth_employee.approve');
+
+});

@@ -15,12 +15,28 @@
                                 <li class="breadcrumb-item active">Attendance</li>
                             </ul>
                         </div>
+                        <br>
+                        <div>
+                            <h5 class="page-title">
+                                APPROVE WORK FOR {{$entity->FirstName}} FOR {{ date_format(date_create($dateStart),"F j, Y h:i A") }} TO {{ date_format(date_create($dateEnd),"F j, Y h:i A") }}
+                            </h5>
+                        </div>
+
+                        <div class="col-auto float-right ml-auto">
+                            {{-- <a href="#" class="btn add-btn" data-toggle="modal" data-target="#add_todaywork"><i class="fa fa-plus"></i> Add Today Work</a> --}}
+                            {{-- <a href="#" class="btn btn-success btn-block"> Approve </a> --}}
+                            <button type="button" class="btn btn-success approve_timesheet" data-id="{{$entity->GenEntityID}}"> Approve </button>
+
+                        </div>
                     </div>
                 </div>
+
+                {{-- <button type="button" class="btn btn-success approve" data-id="{{$timesheet->id}}"> Approve </button> --}}
+
                 <!-- /Page Header -->
                 
                 <!-- Search Filter -->
-                <div class="row filter-row">
+                {{-- <div class="row filter-row">
                     <div class="col-sm-6 col-md-3">  
                         <div class="form-group form-focus">
                             <input type="text" class="form-control floating">
@@ -63,159 +79,136 @@
                     <div class="col-sm-6 col-md-3">  
                         <a href="#" class="btn btn-success btn-block"> Search </a>  
                     </div>     
-                </div>
-                <!-- /Search Filter -->
-                
+                </div> --}}
+                <!-- /Search Filter       'dateStart', 'dateEnd' -->
+
+
+
                 <div class="row">
                     <div class="col-lg-12">
                         <div class="table-responsive">
                             <table class="table table-striped custom-table table-nowrap mb-0">
                                 <thead>
                                     <tr>
-                                        {{-- <th>Employee</th> --}}
-                                        {{-- <th>1</th>
-                                        <th>2</th>
-                                        <th>3</th>
-                                        <th>4</th>
-                                        <th>5</th>
-                                        <th>6</th>
-                                        <th>7</th>
-                                        <th>8</th>
-                                        <th>9</th>
-                                        <th>10</th>
-                                        <th>11</th>
-                                        <th>12</th>
-                                        <th>13</th>
-                                        <th>14</th>
-                                        <th>15</th>
-                                        <th>16</th>
-                                        <th>17</th>
-                                        <th>18</th>
-                                        <th>19</th>
-                                        <th>20</th>
-                                        <th>22</th>
-                                        <th>23</th>
-                                        <th>24</th>
-                                        <th>25</th>
-                                        <th>26</th>
-                                        <th>27</th>
-                                        <th>28</th>
-                                        <th>29</th>
-                                        <th>30</th>
-                                        <th>31</th> --}}
-
-                                        {{-- <th>21</th>
-                                        <th>22</th>
-                                        <th>23</th>
-                                        <th>24</th>
-                                        <th>25</th>
-                                        <th>26</th>
-                                        <th>27</th>
-                                        <th>28</th>
-                                        <th>29</th>
-                                        <th>30</th>
-                                        <th>11</th>
-                                        <th>12</th>
-                                        <th>13</th>
-                                        <th>14</th>
-                                        <th>15</th>
-                                        <th>16</th>
-                                        <th>17</th>
-                                        <th>18</th>
-                                        <th>19</th>
-                                        <th>20</th>
-                                        <th>22</th>
-                                        <th>23</th>
-                                        <th>24</th>
-                                        <th>25</th>
-                                        <th>26</th>
-                                        <th>27</th>
-                                        <th>28</th>
-                                        <th>29</th>
-                                        <th>30</th>
-                                        <th>31</th> --}}
-
+                                       
                                         {{-- {{dd(array_combine($getUserTimesheet->toArray(), $allDateHeader->toArray()))}} --}}
-                                        @foreach ($allDateHeader as $item)
+                                        <th> - </th>
+
+                                        {{-- @foreach (array_unique($allDateHeader->toArray()) as $item)
 
                                         <th> {{date('d', strtotime($item)) }} </th>
-                                        {{-- <th> {{$item}} </th> --}}
+
+                                        @endforeach --}}
+
+                                        {{-- @foreach (array_unique($allDateHeader->toArray()) as $item) --}}
+
+                                        @foreach ($timesheetHeader as $item)
+
+                                        <th> {{date('d', strtotime($item->created_at)) }} </th>
+
                                         @endforeach
+
+                                        {{-- <th> Total </th> --}}
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    
-                                    {{-- @php
+                                        @foreach($userProject as $project)
+                                            @php
+                                                $project = \App\Models\Project::where('id', $project->project_id)->first();
+                                            @endphp
+                                                    <tr> 
+                                                        <td>
+                                                            <h2 class="table-avatar">
+                                                                <a class="avatar avatar-xs" href="profile.html"><img alt="" src="assets/img/profiles/avatar-09.jpg"></a>
+                                                                <a href="profile.html">{{$project->name}}</a>
+                                                            </h2>
+                                                        </td>
+                                                        @foreach($getUserTimesheet as $timesheet)
+                                                            @if(!$timesheet->is_on_leave)
+                                                                @if($project->id == $timesheet->project_id)
+                                                                    <td> {{$timesheet->time_worked}} </td>
+                                                                @else
+                                                                    <td> - </td>
+                                                                @endif
+                                                                @else
+                                                                    <td> - </td>
+                                                            @endif
 
-                                        // $it1 = new ArrayIterator(array(1,2,3));
-                                        // $it2 = new ArrayIterator(array(4,5,6));
+                                                        @endforeach
 
-                                        $timesheets = new MultipleIterator();
+                                                        {{-- @foreach($getUserTimesheet as $timesheet)
+                                                            @if(!$timesheet->is_on_leave)
+                                                                @if($project->id == $timesheet->project_id)
+                                                                {{dd($timesheet->time_worked)}}
+                                                                    <td> {{ $timesheet->time_worked +  }} </td>
+                                                                
+                                                            @endif
+                                                            @endif
 
-                                        $timesheets->attachIterator($dateHeader, 'dateheader');
-                                        $timesheets->attachIterator($getUserTimesheet, 'timesheet');
+                                                        @endforeach --}}
 
-                                        dd($timesheets);
-                                        // foreach ($timesheets as $key => $value) {
-                                        //     echo "Key\n"; var_dump($key);
-                                        //     echo "Value\n"; var_dump($value);
-                                        //     echo "---next---\n";
-                                        // }
 
-                                    @endphp --}}
-                                    {{-- @foreach($getUserTimesheet as $key) --}}
-                                    {{-- {{dd($row['created_at'])}} --}}
-                                    
+                                                    </tr>
+
+                                        @endforeach
+
+                                        {{-- check all leave type and associate with user where neccessary  --}}
+                                        @foreach($allleave as $leave)
+                                        
                                         <tr>
+                                            <td>
+                                                <h2 class="table-avatar">
+                                                    <a class="avatar avatar-xs" href="profile.html"><img alt="" src="assets/img/profiles/avatar-09.jpg"></a>
+                                                    <a href="profile.html">{{$leave->name}}</a>
+                                                </h2>
+                                            </td>
 
-                                            {{-- @foreach(array_combine($allDateHeader, $getUserTimesheet) as $d1 => $d2)  --}}
-                                            
-                                            {{-- @foreach($allDateHeader as $d1 ) --}}
-                                            {{-- @foreach($allDateHeader as $val) --}}
+                                                @foreach($getUserTimesheet as $timesheet)
 
-
-
-
-                                            @foreach($allDateHeader as $key => $value)
-                                            
-                                            @if (isset($getUserTimesheet[$key]) ) 
-{{-- 
-                                             @if(in_array(date('Y-m-d', strtotime($getUserTimesheet[$key]->created_at) ), $allDateHeader->toArray()))  --}}
-                                                @if( date('Y-m-d', strtotime($getUserTimesheet[$key]->created_at) ) == $value)
-
-                                             @php
-
-//                                                 $resultMontly = array_filter($data, function($element) use ($customerNumber, $start_month_date, $end_date){
-
-// return $element['CustomerNumber'] == $customerNumber && $element['PostingDate'] <= $end_date && $element['PostingDate'] >= $start_month_date;
-// });
-                                             @endphp
-
-                                                    <td> {{$getUserTimesheet[$key]->time_worked}} </td>
-
+                                                @if($leave->id == $timesheet->type_of_leave)
+                                                    <td> {{$timesheet->time_worked}} </td>
+                                                @else
+                                                    <td> - </td>
                                                 @endif
-                                            @else
 
-                                                <td> - </td>
-                                            @endif
+                                            @endforeach
+                                        </tr>
+                                        @endforeach
+                                        <tr>
+                                            <td>
+                                                <h2 class="table-avatar">
+                                                    <a class="avatar avatar-xs" href="profile.html"><img alt="" src="assets/img/profiles/avatar-09.jpg"></a>
+                                                    <a href="profile.html">Time Worked</a>
+                                                </h2>
+                                            </td>
 
-                                            @endforeach 
+                                                @foreach($getUserTimesheet as $timesheet)
+                                                    <td> {{$timesheet->time_worked}} </td>
+                                                @endforeach
+                                        </tr>
 
+                                        <tr>
+                                            <td>
+                                                <h2 class="table-avatar">
+                                                    <a class="avatar avatar-xs" href="profile.html"><img alt="" src="assets/img/profiles/avatar-09.jpg"></a>
+                                                    <a href="profile.html">Standard Worked</a>
+                                                </h2>
+                                            </td>
+                                            @foreach($getUserTimesheet as $timesheet)
+                                                <td> {{$timesheet->standard_time}} </td>
+                                            @endforeach
+                                        </tr>
 
-
-
-                                                {{-- @foreach($getUserTimesheet as $key => $value)
-                                           
-                                                    <td> {{$value->time_worked}} </td>
-                                                
-
-
-
-
-
-
-
-                                                    @endforeach --}}
+                                        <tr>
+                                            <td>
+                                                <h2 class="table-avatar">
+                                                    <a class="avatar avatar-xs" href="profile.html"><img alt="" src="assets/img/profiles/avatar-09.jpg"></a>
+                                                    <a href="profile.html">Overtime Worked</a>
+                                                </h2>
+                                            </td>
+                                            @foreach($getUserTimesheet as $timesheet)
+                                            <td> {{$timesheet->over_time}} </td>
+                                        @endforeach
                                         </tr>
                                     
 
@@ -385,3 +378,30 @@
         <!-- Page Wrapper -->
 
     @endsection
+    @section('scripts')
+    <script type="text/javascript">
+
+        $('.approve_timesheet').on('click',function(e){
+
+            var id = $(this).attr("data-id");
+
+            $.ajax({
+                url: "{{ route('auth_employee.approve')}}",
+            type:"POST",
+            data:{
+                "_token": "{{ csrf_token() }}",
+                id:id
+            },
+            success:function(response){
+
+                toastr.success(response.success);
+                // setTimeout(function(){location.reload()}, 2000);
+            },
+            error: function(response) {
+                toastr.error("Something went wrong");
+                // setTimeout(function(){location.reload()}, 2000);
+            },
+            });
+        });
+</script>
+@endsection

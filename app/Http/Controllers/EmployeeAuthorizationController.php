@@ -19,7 +19,7 @@ class EmployeeAuthorizationController extends Controller
 
         // if($userRole->role->name == 'employee'){ //employee
         //     return redirect()->back()->with([
-        //         'status' => 'failed',
+        //         'status' => 'danger',
         //         'message' => 'Employee not allowed'
         //     ]);
         // }
@@ -40,7 +40,7 @@ class EmployeeAuthorizationController extends Controller
         }
         else{
             return redirect()->back()->with([
-                'status' => 'failed',
+                'status' => 'danger',
                 'message' => 'Employee not allowed'
             ]);
         }

@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\Auth;
 use Session;
 use App\Models\User;
 use Hash;
+use Carbon\Carbon;
   
 class AuthController extends Controller
 {
@@ -39,14 +40,28 @@ class AuthController extends Controller
      */
     public function postLogin(Request $request)
     {
+        // last_password_change
+
         $request->validate([
             'VIPUserName' => 'required',
             'password' => 'required',
         ]);
+
    
         $credentials = $request->only('VIPUserName', 'password'); 
 
+        // $checkPassword = User::where('VIPUserName', $request->VIPUserName)->first();
+
+        // if($checkPassword->last_password_change == null)
+        // {
+        //     return redirect("passwordreset");
+        // }
+
         if (Auth::attempt($credentials)) {
+
+            // $checkPassword->last_password_change = Carbon::now();
+            // $checkPassword->save();
+
             return redirect()->intended('dashboard')
                         ->withSuccess('You have Successfully loggedin');
         }
@@ -72,6 +87,14 @@ class AuthController extends Controller
          
         return redirect("dashboard")->withSuccess('Great! You have Successfully loggedin');
     }
+
+
+    public function updatePassword(Request $request)
+    {
+        
+        $checkPassword = User::where('VIPUserName', $request->VIPUserName)->first();
+
+    }
     
     /**
      * Write code on Method
@@ -88,8 +111,12 @@ class AuthController extends Controller
 
         $employees = User::all()->take(5);
 
+        $getAllAbsentUsers = User::where('is_on_leave', 1)->get();
+
+        // whereDate('created_at', Carbon::today())
+        
         if(Auth::check()){
-            return view('auth.dashboard', compact('allEmployees', 'allProjects', 'projects', 'employees'));
+            return view('auth.dashboard', compact('allEmployees', 'allProjects', 'projects', 'employees', 'getAllAbsentUsers'));
         }
   
         return redirect("login")->withSuccess('Opps! You do not have access');

@@ -12,9 +12,9 @@
                       <form action="{{ route('login.post') }}" method="POST">
                           @csrf
                           <div class="form-group row">
-                              <label for="email_address" class="col-md-4 col-form-label text-md-right">E-Mail Address</label>
+                              <label for="VIPUserName" class="col-md-4 col-form-label text-md-right">Username</label>
                               <div class="col-md-6">
-                                  <input type="text" id="email_address" class="form-control" name="VIPUserName" required autofocus>
+                                  <input type="text" id="VIPUserName" class="form-control" name="VIPUserName" required autofocus>
                                   @if ($errors->has('VIPUserName'))
                                       <span class="text-danger">{{ $errors->first('VIPUserName') }}</span>
                                   @endif

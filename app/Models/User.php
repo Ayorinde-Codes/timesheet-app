@@ -60,6 +60,12 @@ class User extends Authenticatable
         return Entity::where('GenEntityID', $entityID)->first();
     }
 
+    public function role() { 
+
+         $userRole = UserRole::where('GenEntityID',  Auth()->user()->GenEntityID)->first(); 
+
+         return $userRole->role->name;
+    }
 
     public static function userRole($entityID)
     {

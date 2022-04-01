@@ -21,10 +21,53 @@ class AbsenceController extends Controller
 
     public function create(Request $request)
     {
-        $this->validate($request, [
+        // $this->validate($request, [
 
-        ]);
+        // ]);
+
+        $leave= [
+            'name' => $request->name,
+            'time_period' =>  $request->time_period,
+            'description' => $request->description
+        ];
         
+        $createLeave = Absence::create($leave);
+
+        if($createLeave)
+        {
+            return redirect()->back()->with([
+                'status' => 'success',
+                'message' => 'Successfully created project'
+            ]);
+        }
+
+        return redirect()->back()->with([
+            'status' => 'danger',
+            'message' => 'project not found'
+        ]); 
+    }
+
+    public function update(Request $request)
+    {
+        $leave = Absence::where('id', $request->absence_id)->first();
+
+        if(is_null($leave))
+            {
+                return redirect()->back()->with([
+                    'status' => 'danger',
+                    'message' => 'Leave not found'
+                ]); 
+            }
+
+            $leave->name = $request->name;
+            $leave->time_period = $request->time_period;
+            $leave->description = $request->description;
+            $leave->save();
+            
+            return redirect()->back()->with([
+                'status' => 'success',
+                'message' => 'Successfully updated Leave'
+            ]);
     }
 
     public function userLeave()
@@ -45,8 +88,8 @@ class AbsenceController extends Controller
         if(is_null($user))
         {
             return redirect()->back()->with([
-                'status' => 'failed',
-                'message' => 'User not found'
+                'status' => 'danger',
+                'message' => 'Leave not found'
             ]); 
         }
 
@@ -72,7 +115,7 @@ class AbsenceController extends Controller
 
         if($userRole->role->name == 'employee'){ //employee
             return redirect()->back()->with([
-                'status' => 'failed',
+                'status' => 'danger',
                 'message' => 'Employee not allowed'
             ]);
         }
@@ -102,7 +145,7 @@ class AbsenceController extends Controller
             if(is_null($leave))
             {
                 return redirect()->back()->with([
-                    'status' => 'failed',
+                    'status' => 'danger',
                     'message' => 'leave not found'
                 ]); 
             }
@@ -125,7 +168,7 @@ class AbsenceController extends Controller
             if(is_null($leave))
             {
                 return redirect()->back()->with([
-                    'status' => 'failed',
+                    'status' => 'danger',
                     'message' => 'leave not found'
                 ]); 
             }
@@ -139,23 +182,19 @@ class AbsenceController extends Controller
                 'status' => 'success',
                 'message' => 'Successfully apply for leave'
             ]);
-        }
-       
+        }  
     }
 
 
     public function adminApproveLeave(Request $request)
     {
-        // $created_day = Carbon::createFromFormat('d/m/Y', $request->leave_started)->format('Y-m-d H:i:s');
-
-        // $user = User::where('GenEntityID', Auth()->user()->GenEntityID)->first();
 
         $leave = User::where('GenEntityID', $request->id)->where('approved_by', 'supervisor')->first();
 
         if(is_null($leave))
         {
             return redirect()->back()->with([
-                'status' => 'failed',
+                'status' => 'danger',
                 'message' => 'leave not found'
             ]); 
         }
