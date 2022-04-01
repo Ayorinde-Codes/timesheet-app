@@ -23,6 +23,7 @@ class CreateTimesheetsTable extends Migration
             $table->integer('time_worked')->nullable();
             $table->integer('standard_time')->nullable();
             $table->integer('over_time')->nullable();
+            $table->boolean('is_on_leave')->default(0);
             $table->timestamps();
         });
     }

@@ -61,7 +61,7 @@
                                             <a href="#" class="action-icon dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i class="material-icons">more_vert</i></a>
                                             <div class="dropdown-menu dropdown-menu-right">
                                                 <a class="dropdown-item" href="#" data-toggle="modal" data-target="#edit_project_{{$project->id}}"><i class="fa fa-pencil m-r-5"></i> Edit</a>
-                                                <a class="dropdown-item" href="#" data-toggle="modal" data-target="#delete_project_{{$project->id}}"><i class="fa fa-trash-o m-r-5"></i> Delete</a>
+                                                {{-- <a class="dropdown-item" href="#" data-toggle="modal" data-target="#delete_project_{{$project->id}}"><i class="fa fa-trash-o m-r-5"></i> Delete</a> --}}
                                             </div>
                                         </div>
                                     </td>
@@ -78,20 +78,28 @@
                                                 </button>
                                             </div>
                                             <div class="modal-body">
-                                                <form>
+                                                <form action="{{ route('project.update') }}" method="POST">
+                                                    @csrf
                                                     <div class="row">
                                                         <div class="col-sm-6">
                                                             <div class="form-group">
                                                                 <label>Project Name</label>
-                                                                <input class="form-control" value="{{$project->name}}" type="text">
+                                                                <input class="form-control" value="{{$project->name}}" readonly type="text">
+                                                                <input class="form-control" name="project_id" value="{{$project->id}}" type="hidden">
+                                                            </div>
+                                                        </div> 
+                                                        <div class="col-sm-6">
+                                                            <div class="form-group">
+                                                                <label>Project Code</label>
+                                                                <input class="form-control" name="project_code" value="{{$project->project_code}}" type="text">
                                                             </div>
                                                         </div>
                                                         <div class="col-sm-6">
                                                             <div class="form-group">
                                                                 <label>Status</label>
-                                                                <select class="select">
-                                                                    <option @if ($project->status== true ) selected="selected" @endif value="0">Active</option>
-                                                                    <option @if ($project->status== false ) selected="selected"  @endif value="1">Inactive</option>
+                                                                <select name="status" class="select">
+                                                                    <option @if ($project->status== true ) selected="selected" @endif value="1">Active</option>
+                                                                    <option @if ($project->status== false ) selected="selected"  @endif value="0">Inactive</option>
                                                                 </select>
                                                             </div>
                                                         </div>
@@ -107,6 +115,9 @@
                                     </div>
                                 </div>
                                 <!-- /Edit Project Modal -->
+
+
+
                                 @endforeach
                             </tbody>
                         </table>
@@ -127,21 +138,27 @@
                         </button>
                     </div>
                     <div class="modal-body">
-                        <form>
+                        <form action="{{ route('project.create') }}" method="POST">
                             @csrf
                             <div class="row">
                                 <div class="col-sm-6">
                                     <div class="form-group">
                                         <label>Project Name</label>
-                                        <input class="form-control" type="text">
+                                        <input class="form-control" name="project_name" type="text">
+                                    </div>
+                                </div>
+                                <div class="col-sm-6">
+                                    <div class="form-group">
+                                        <label>Project Code</label>
+                                        <input class="form-control" name="project_code" value="" type="text">
                                     </div>
                                 </div>
                                 <div class="col-sm-6">
                                     <div class="form-group">
                                         <label>Status</label>
-                                        <select class="select">
-                                            <option value="0">Active</option>
-                                            <option value="1">Inactive</option>
+                                        <select name="status" class="select">
+                                            <option value="1">Active</option>
+                                            <option value="0">Inactive</option>
                                         </select>
                                     </div>
                                 </div>

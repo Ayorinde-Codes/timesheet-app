@@ -55,6 +55,7 @@
                 </div>
             </div>
             
+            @if (Auth()->user()->role() != 'employee')
             <div class="col-md-6 col-sm-6 col-lg-6 col-xl-3">
                 <div class="card dash-widget">
                     <div class="card-body">
@@ -66,11 +67,12 @@
                     </div>
                 </div>
             </div>
+            @endif
         </div>
         
         <!-- Statistics Widget -->
         <div class="row">
-            <div class="col-md-12 col-lg-12 col-xl-4 d-flex">
+            {{-- <div class="col-md-12 col-lg-12 col-xl-4 d-flex">
                 <div class="card flex-fill dash-statistics">
                     <div class="card-body">
                         <h5 class="card-title">Statistics</h5>
@@ -108,31 +110,38 @@
                         </div>
                     </div>
                 </div>
-            </div>
+            </div> --}}
 
-            
+            @if (Auth()->user()->role() != 'employee')
             <div class="col-md-12 col-lg-6 col-xl-4 d-flex">
                 <div class="card flex-fill">
                     <div class="card-body">
-                        <h4 class="card-title">Today Absent <span class="badge bg-inverse-danger ml-2">5</span></h4>
-                        <div class="leave-info-box">
-                            <div class="media align-items-center">
-                                <a href="profile.html" class="avatar"><img alt="" src="assets/img/user.jpg"></a>
-                                <div class="media-body">
-                                    <div class="text-sm my-0">Martin Lewis</div>
+                        <h4 class="card-title">Today Absent <span class="badge bg-inverse-danger ml-2"> {{count($getAllAbsentUsers)}} </span></h4>
+                        @foreach($getAllAbsentUsers->take(5) as $absentUsers)
+                                    @php
+                                        $entity = \App\Models\User::entity($absentUsers->GenEntityID);
+                                    @endphp
+                            <div class="leave-info-box">
+                                <div class="media align-items-center">
+                                    <a href="profile.html" class="avatar"><img alt="" src="assets/img/user.jpg"></a>
+                                    <div class="media-body">
+                                        <div class="text-sm my-0"> {{$entity->DisplayName}}</div>
+                                    </div>
+                                </div>
+                                <div class="row align-items-center mt-3">
+                                    <div class="col-6">
+                                        {{-- <h6 class="mb-0">{{$absentUsers->leave_started}}</h6> --}}
+                                        <h6 class="mb-0">{{date_format(date_create($absentUsers->leave_started),"F j, Y")}}</h6>
+                                        <span class="text-sm text-muted">Leave Date</span>
+                                    </div>
+                                    <div class="col-6 text-right">
+                                        <span class="badge bg-inverse-success">Approved</span>
+                                    </div>
                                 </div>
                             </div>
-                            <div class="row align-items-center mt-3">
-                                <div class="col-6">
-                                    <h6 class="mb-0">4 Sep 2019</h6>
-                                    <span class="text-sm text-muted">Leave Date</span>
-                                </div>
-                                <div class="col-6 text-right">
-                                    <span class="badge bg-inverse-danger">Pending</span>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="leave-info-box">
+                        @endforeach
+
+                        {{-- <div class="leave-info-box">
                             <div class="media align-items-center">
                                 <a href="profile.html" class="avatar"><img alt="" src="assets/img/user.jpg"></a>
                                 <div class="media-body">
@@ -148,19 +157,19 @@
                                     <span class="badge bg-inverse-success">Approved</span>
                                 </div>
                             </div>
-                        </div>
+                        </div> --}}
                         <div class="load-more text-center">
-                            <a class="text-dark" href="javascript:void(0);">Load More</a>
+                            <a class="text-dark" href="#">Load More</a>
                         </div>
                     </div>
                 </div>
             </div>
+            @endif
         </div>
         <!-- /Statistics Widget -->
         
-
-        
         <div class="row">
+            @if (Auth()->user()->role() != 'employee')
             <div class="col-md-6 d-flex">
                 <div class="card card-table flex-fill">
                     <div class="card-header">
@@ -184,7 +193,6 @@
                                             $userRole = \App\Models\User::userRole($employee->GenEntityID);
                                         @endphp
                                     <tr>
-
                                         <td> {{ optional($entity)->DisplayName }}</td>
                                         <td> {{ optional($entity)->EmailAddress }}</td>
                                         @if(is_null($userRole)) 
@@ -205,6 +213,7 @@
                     </div>
                 </div>
             </div>
+            @endif
 
             <div class="col-md-6 d-flex">
                 <div class="card card-table flex-fill">
@@ -263,8 +272,8 @@
                                                             <div class="form-group">
                                                                 <label>Status</label>
                                                                 <select class="select">
-                                                                    <option @if ($project->status== true ) selected="selected" @endif value="0">Active</option>
-                                                                    <option @if ($project->status== false ) selected="selected"  @endif value="1">Inactive</option>
+                                                                    <option @if ($project->status== true ) selected="selected" @endif value="1">Active</option>
+                                                                    <option @if ($project->status== false ) selected="selected"  @endif value="0">Inactive</option>
                                                                 </select>
                                                             </div>
                                                         </div>
