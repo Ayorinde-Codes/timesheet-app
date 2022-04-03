@@ -25,9 +25,7 @@
                 @endif --}}
 
                 @if (Auth()->user()->role() == 'admin')
-                    <li> 
-                        <a href="{{ URL('employees') }}"><i class="la la-user"></i> <span>Employees</span></a>
-                    </li>  
+                    
                     <li> 
                         <a href="{{ URL('projects') }}"><i class="la la-rocket"></i> <span>Projects</span></a>
                     </li>  
@@ -48,12 +46,15 @@
                     {{-- <li> 
                         <a href="{{ URL('profile') }}"><i class="la la-user-times"></i> <span>Profile</span></a>
                     </li> --}}
-                @if (Auth()->user()->role() == 'admin' || Auth()->user()->role() == 'supervisor')
+                @if (Auth()->user()->role() == 'admin' || Auth()->user()->role() == 'employee')
+                <li> 
+                    <a href="{{ URL('employees') }}"><i class="la la-user"></i> <span>Employees</span></a>
+                </li>  
                     <li> 
                         <a href="{{ URL('authorize_employee') }}"><i class="la la-user-times"></i> <span> Authorize Employee Timesheet</span></a>
                     </li>
                 @endif
-                
+
                 @if (Auth()->user()->role() == 'employee')
                     <li> 
                         <a href="{{ URL('user/leave') }}"><i class="la la-user-times"></i> <span> Apply Leave</span></a>

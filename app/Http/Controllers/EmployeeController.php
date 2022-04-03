@@ -99,7 +99,11 @@ class EmployeeController extends Controller
 
         $dateStart = Carbon::createFromFormat('Y-m-d', $now->year.'-'.$now->month.'-21')->subMonth();
 
-        $dateEnd = Carbon::now()->endOfMonth()->format('Y-m-d');
+        $dateEnd = Carbon::createFromFormat('Y-m-d', $now->year.'-'.$now->month.'-20');
+
+        // $dateEnd = Carbon::now()->endOfMonth()->format('Y-m-d');
+
+        // dd( $dateStart, $dateEnd);
 
         // Declare an empty array
         $dateHeader = array();
@@ -116,13 +120,17 @@ class EmployeeController extends Controller
             $dateHeader[] = $Store;
         }
         
+
+
+
+
+
         // Display the dates in array format
         $allDateHeader = collect($dateHeader);
 
         $userTimesheet = Timesheet::where('GenEntityID', $id)->where('status', 'processing')->get();
       
         $getUserTimesheet = $this->filterTimesheetByDate($userTimesheet, $dateStart, $dateEnd);
-        $getUserTimesheetTime = $this->filterTimesheetByDate($userTimesheet, $dateStart, $dateEnd)->toArray();
 
         $userProject = collect($getUserTimesheet)->unique('project_id')->all();
 
@@ -130,8 +138,27 @@ class EmployeeController extends Controller
 
         $allleave = Absence::get();
 
-        return view('view-timesheet', compact('getUserTimesheet', 'user', 'allDateHeader', 'timesheetHeader', 'userProject', 'allleave', 'dateStart', 'dateEnd', 'entity'));
 
+        $userTimesheetDates = $getUserTimesheet->map(function ($timesheet) {
+            return date('Y-m-d',strtotime($timesheet->created_at));
+        })->toArray();
+
+
+        for($i =0; $i < count($dateHeader); $i++)
+        {
+            $itemIndex = array_search($dateHeader[$i], $userTimesheetDates);
+
+            if(!is_numeric($itemIndex)) $itemToShow[] = '-';
+
+            else{
+                $itemToShow[] = $getUserTimesheet[$itemIndex];
+            }
+        }
+
+        // dd($itemToShow);
+
+
+        return view('view-timesheet', compact('getUserTimesheet', 'user', 'allDateHeader', 'timesheetHeader', 'userProject', 'allleave', 'dateStart', 'dateEnd', 'entity', 'itemToShow'));
     }
 
     private function filterTimesheetByDate($timesheet, $startDate, $endDate)

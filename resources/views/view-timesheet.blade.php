@@ -89,127 +89,58 @@
                         <div class="table-responsive">
                             <table class="table table-striped custom-table table-nowrap mb-0">
                                 <thead>
-                                    <tr>
+                                    <tr style="background: lightyellow">
                                        
                                         {{-- {{dd(array_combine($getUserTimesheet->toArray(), $allDateHeader->toArray()))}} --}}
-                                        <th> - </th>
+                                        {{-- <th> - </th> --}}
 
-                                        {{-- @foreach (array_unique($allDateHeader->toArray()) as $item)
+                                        @foreach (array_unique($allDateHeader->toArray()) as $item)
 
                                         <th> {{date('d', strtotime($item)) }} </th>
 
-                                        @endforeach --}}
+                                        @endforeach
 
                                         {{-- @foreach (array_unique($allDateHeader->toArray()) as $item) --}}
 
-                                        @foreach ($timesheetHeader as $item)
+                                        {{-- @foreach ($timesheetHeader as $item)
 
                                         <th> {{date('d', strtotime($item->created_at)) }} </th>
 
-                                        @endforeach
+                                        @endforeach --}}
 
-                                        {{-- <th> Total </th> --}}
+                                        {{-- <th> Total   date('Y-m-d',strtotime($date1)) </th> --}}
                                     </tr>
                                 </thead>
                                 <tbody>
-                                        @foreach($userProject as $project)
-                                            @php
-                                                $project = \App\Models\Project::where('id', $project->project_id)->first();
-                                            @endphp
-                                                    <tr> 
-                                                        <td>
-                                                            <h2 class="table-avatar">
-                                                                <a class="avatar avatar-xs" href="profile.html"><img alt="" src="assets/img/profiles/avatar-09.jpg"></a>
-                                                                <a href="profile.html">{{$project->name}}</a>
-                                                            </h2>
-                                                        </td>
-                                                        @foreach($getUserTimesheet as $timesheet)
-                                                            @if(!$timesheet->is_on_leave)
-                                                                @if($project->id == $timesheet->project_id)
-                                                                    <td> {{$timesheet->time_worked}} </td>
-                                                                @else
-                                                                    <td> - </td>
-                                                                @endif
-                                                                @else
-                                                                    <td> - </td>
-                                                            @endif
-
-                                                        @endforeach
-
-                                                        {{-- @foreach($getUserTimesheet as $timesheet)
-                                                            @if(!$timesheet->is_on_leave)
-                                                                @if($project->id == $timesheet->project_id)
-                                                                {{dd($timesheet->time_worked)}}
-                                                                    <td> {{ $timesheet->time_worked +  }} </td>
-                                                                
-                                                            @endif
-                                                            @endif
-
-                                                        @endforeach --}}
-
-
-                                                    </tr>
-
+                                    <tr>
+                                        {{-- @foreach($getUserTimesheet as $key => $value) --}}
+                                        @foreach($itemToShow as $timesheet)
+                                            @if($timesheet == '-')
+                                                <td> - </td>
+                                            @else
+                                                <td> {{$timesheet->time_worked}} </td>
+                                            @endif
+                                        {{-- {{dd(date('Y-m-d',strtotime($value->created_at)))}} --}}
                                         @endforeach
+                                        {{-- {{dd($getUserTimesheet['created_at']->toArray())}} --}}
+                                        {{-- @php
 
-                                        {{-- check all leave type and associate with user where neccessary  --}}
-                                        @foreach($allleave as $leave)
-                                        
-                                        <tr>
-                                            <td>
-                                                <h2 class="table-avatar">
-                                                    <a class="avatar avatar-xs" href="profile.html"><img alt="" src="assets/img/profiles/avatar-09.jpg"></a>
-                                                    <a href="profile.html">{{$leave->name}}</a>
-                                                </h2>
-                                            </td>
+                                            for($i =0; $i < count($dateHeader); $i++)
+                                            {
+                                                $itemIndex = array_search($dateHeader[$i], $getUserTimesheet['created_at']->toArray());
 
-                                                @foreach($getUserTimesheet as $timesheet)
+                                                if(!is_numeric($itemIndex)) $itemToShow[] = '-';
 
-                                                @if($leave->id == $timesheet->type_of_leave)
-                                                    <td> {{$timesheet->time_worked}} </td>
-                                                @else
-                                                    <td> - </td>
-                                                @endif
+                                                else{
+                                                    $itemToShow[] = $getUserTimesheet[$itemIndex];
+                                                }
+                                            }
+                                            dd($itemToShow);
 
-                                            @endforeach
-                                        </tr>
-                                        @endforeach
-                                        <tr>
-                                            <td>
-                                                <h2 class="table-avatar">
-                                                    <a class="avatar avatar-xs" href="profile.html"><img alt="" src="assets/img/profiles/avatar-09.jpg"></a>
-                                                    <a href="profile.html">Time Worked</a>
-                                                </h2>
-                                            </td>
+                                        @endphp --}}
 
-                                                @foreach($getUserTimesheet as $timesheet)
-                                                    <td> {{$timesheet->time_worked}} </td>
-                                                @endforeach
-                                        </tr>
+                                    </tr>
 
-                                        <tr>
-                                            <td>
-                                                <h2 class="table-avatar">
-                                                    <a class="avatar avatar-xs" href="profile.html"><img alt="" src="assets/img/profiles/avatar-09.jpg"></a>
-                                                    <a href="profile.html">Standard Worked</a>
-                                                </h2>
-                                            </td>
-                                            @foreach($getUserTimesheet as $timesheet)
-                                                <td> {{$timesheet->standard_time}} </td>
-                                            @endforeach
-                                        </tr>
-
-                                        <tr>
-                                            <td>
-                                                <h2 class="table-avatar">
-                                                    <a class="avatar avatar-xs" href="profile.html"><img alt="" src="assets/img/profiles/avatar-09.jpg"></a>
-                                                    <a href="profile.html">Overtime Worked</a>
-                                                </h2>
-                                            </td>
-                                            @foreach($getUserTimesheet as $timesheet)
-                                            <td> {{$timesheet->over_time}} </td>
-                                        @endforeach
-                                        </tr>
                                     
 
                                     {{-- <tr>
