@@ -89,6 +89,7 @@
                                                 </button>
                                             </div>
                                             <div class="modal-body">
+                                                {{-- edit timesheet --}}
                                                 <form>
                                                     <div class="row">
                                                         <div class="form-group col-sm-6">
@@ -234,4 +235,3 @@
     </div>
 @endsection
     <!-- /Page Wrapper -->
-{{-- @include('partials.footer') --}}

@@ -36,11 +36,14 @@ class TimesheetController extends Controller
         $projects = Project::get();
 
         return view('view-user-timesheet', compact('timesheets', 'projects'));
-
     }
 
     public function create(Request $request)
     {
+        $this->validate($request, [
+            'time_worked' => 'required|min:0|max:8',
+        ]);
+
         $today = Carbon::today();
 
         $created_day = Carbon::createFromFormat('d/m/Y', $request->date)->format('Y-m-d H:i:s');
@@ -60,11 +63,23 @@ class TimesheetController extends Controller
 
         // valdate not to make post of days between 21first and lastday of current month    ->endOfMonth()
 
-        if( Timesheet::where('project_id', $request->project_id)->whereDate('created_at', Carbon::today())->exists())
-        {
+        // if( Timesheet::where('project_id', $request->project_id)->whereDate('created_at', Carbon::today())->exists())
+        // {
+        //     return redirect()->back()->with([
+        //         'status' => 'danger',
+        //         'message' => 'you cannot create time sheet for a project that exist'
+        //     ]);
+        // }
+
+        //validate that users can add more than the sum of all timesheet should exceeed 8hrs 
+
+        $maxHoursTodayTimesheet = Timesheet::where('GenEntityID', Auth()->user()->GenEntityID)->whereDate('created_at', Carbon::today())->sum('time_worked');
+
+        if($maxHoursTodayTimesheet > $this->overwork){
+
             return redirect()->back()->with([
                 'status' => 'danger',
-                'message' => 'you cannot create time sheet for a project that exist'
+                'message' => 'max hours for the day completed for time sheet.'
             ]);
         }
 
@@ -75,6 +90,9 @@ class TimesheetController extends Controller
                 'message' => 'you cannot create time sheet for a day above today'
             ]);
         }
+
+        // if time worked is less than overtime , overtime is return timeworked to be 0 and 
+        // if today is friday time should be 5 
 
         $over_time = $request->time_worked > $this->overwork ? $request->time_worked - $this->overwork : 0;
 

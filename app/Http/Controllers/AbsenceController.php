@@ -137,7 +137,6 @@ class AbsenceController extends Controller
     {
         $userRole = UserRole::where('GenEntityID', Auth()->user()->GenEntityID)->first();
 
-
         if ($userRole->role->name == 'supervisor') {
 
             $leave = User::where('GenEntityID', $request->id)->where('approved_by', 'employee')->first();
@@ -149,7 +148,8 @@ class AbsenceController extends Controller
                     'message' => 'leave not found'
                 ]); 
             }
-    
+            
+            $leave->is_on_leave = 1;
             $leave->approved_by = 'supervisor';
             $leave->save();
     
